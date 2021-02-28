@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ScryfallTools"
+    }
+  },
+  "defaultProject": "ScryfallTools",
+  "cli": {
+    "analytics": "77a79bb6-9c44-4fc8-9306-972fcd98fc2c"
+  }
 }

@@ -1,0 +1,35 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Owned</th>
+        <th scope="col">Wanted</th>
+        <th scope="col">P/T</th>
+        <th scope="col">Colors</th>
+        <th scope="col">Name</th>
+        <th scope="col">Type Line</th>
+        <th scope="col">Text</th>
+        <th scope="col">Sets</th>
+        <th scope="col">Cards that Create</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let token of tokens">
+        <th scope="col"><input type="number" [(ngModel)]="token.Owned"/></th>
+        <th scope="col"><input type="number" [(ngModel)]="token.Wanted"/></th>
+        <th scope="col">{{token.Power}}/{{token.Toughness}}</th>
+        <th scope="col"><span *ngFor="let color of token.Colors">{{color}},</span></th>
+        <th scope="col">{{token.Name}}</th>
+        <th scope="col">{{token.Types}}</th>
+        <th scope="col">{{token.text}}</th>
+        <th scope="col"><span *ngFor="let edition of token.Editions">{{edition}},</span></th>
+        <th scope="col">
+            <div *ngIf="token.createdBy.length < 9">
+                <span *ngFor="let card of token.createdBy">{{card.Name}},</span>
+            </div>
+            <div *ngIf="token.createdBy.length > 9">
+                {{token.createdBy.length}}
+            </div>
+        </th>
+      </tr>
+    </tbody>
+  </table>
