@@ -60,7 +60,7 @@ export class TokenComponent implements OnInit {
                       face.image_uris
                     )
 
-                      this.tokens.push( tokenData );
+                    this.tokens.push( tokenData );
                   }
                 } );
 
@@ -98,20 +98,33 @@ export class TokenComponent implements OnInit {
         } ) );
   }
 
-  dedupeTokens(){
-    console.log(this.tokens)
+  dedupeTokens() {
+    const uniqueTokens = [];
 
+    this.tokens.forEach( ( token ) => {
+      let isDupe = false;
+      for ( var i = 0; i < uniqueTokens.length; i++ ) {
+        if ( token.Name === "Saproling" && uniqueTokens[ i ].Name === "Saproling" ) {
+          console.log( token );
+          console.log( uniqueTokens[ i ] )
+        }
+        if ( token.Name === uniqueTokens[ i ].Name &&
+          token.Power === uniqueTokens[ i ].Power &&
+          token.Toughness === uniqueTokens[ i ].Toughness &&
+          token.Colors.toString() === uniqueTokens[ i ].Colors.toString() &&
+          token.Text === uniqueTokens[ i ].Text &&
+          token.TypeLine === uniqueTokens[ i ].TypeLine
+        ) {
+          isDupe = true;
+          break;
+        }
+      }
+      if ( !isDupe )
+        uniqueTokens.push( token );
 
-    //const uniqueTokens =  token.Name === o.Name &&
-    //   token.Power === o.Power &&
-    //   token.Toughness === o.Toughness &&
-    //   token.Colors === o.Colors &&
-    //   token.Text === o.Text &&
-    //   token.TypeLine === o.TypeLine
+    } )
 
-      
-
-//console.log(uniqueTokens)
+    this.tokens = uniqueTokens
   }
 
   processData() {
