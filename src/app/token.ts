@@ -30,5 +30,6 @@ export class Token {
         this.TypeLine = TypeLine;
         this.Text = Text;
         this.ImageURL = ImageURL;
+        this.CreatedBy = [];
     }
 }

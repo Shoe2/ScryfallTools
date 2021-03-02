@@ -9,7 +9,7 @@
         <th scope="col">Type Line</th>
         <th scope="col">Text</th>
         <!-- <th scope="col">Sets</th> -->
-        <!-- <th scope="col">Cards that Create</th> -->
+        <th scope="col">Cards that Create</th>
       </tr>
     </thead>
     <tbody>
@@ -21,15 +21,15 @@
         <td scope="col">{{token.Name}}</td>
         <td scope="col">{{token.TypeLine}}</td>
         <td scope="col">{{token.Text}}</td>
-        <!-- <td scope="col"><span *ngFor="let edition of token.Editions">{{edition}},</span></td>
+        <!-- <td scope="col"><span *ngFor="let edition of token.Editions">{{edition}},</span></td> -->
         <td scope="col">
-            <div *ngIf="token.createdBy.length < 9">
-                <span *ngFor="let card of token.createdBy">{{card.Name}},</span>
+            <div *ngIf="token?.CreatedBy?.length < 9">
+                <span *ngFor="let card of token.CreatedBy">{{card.Name}},</span>
             </div>
-            <div *ngIf="token.createdBy.length > 9">
-                {{token.createdBy.length}}
+            <div *ngIf="token?.CreatedBy?.length > 9">
+                {{token.CreatedBy.length}}
             </div>
-        </td> -->
+        </td>
       </tr>
     </tbody>
   </table>

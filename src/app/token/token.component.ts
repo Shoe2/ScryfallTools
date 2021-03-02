@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ScryfallCard } from 'node_modules/scryfall/build/ScryfallCard';
 import { BehaviorSubject } from 'rxjs';
+import { ScryfallColor } from 'scryfall/build/ScryfallColor';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
 import { Token } from '../token';
 
@@ -89,7 +90,7 @@ export class TokenComponent implements OnInit {
             if ( clearOldData ) {
               this.cardsThatMakeTokens = [];
             }
-            this.cardsThatMakeTokens.concat( response.data );
+            this.cardsThatMakeTokens = this.cardsThatMakeTokens.concat( response.data );
             this.loadingSource.next( this.loadingSource.value + 1 );
 
           }
@@ -104,10 +105,6 @@ export class TokenComponent implements OnInit {
     this.tokens.forEach( ( token ) => {
       let isDupe = false;
       for ( var i = 0; i < uniqueTokens.length; i++ ) {
-        if ( token.Name === "Saproling" && uniqueTokens[ i ].Name === "Saproling" ) {
-          console.log( token );
-          console.log( uniqueTokens[ i ] )
-        }
         if ( token.Name === uniqueTokens[ i ].Name &&
           token.Power === uniqueTokens[ i ].Power &&
           token.Toughness === uniqueTokens[ i ].Toughness &&
@@ -128,27 +125,102 @@ export class TokenComponent implements OnInit {
   }
 
   processData() {
+
     this.tokens.forEach( ( token: Token ) => {
-      const tokenSearchText = this.createTokenSearchString( token );
+      let tokenSearchTextArray: string[] = [];
+      switch ( token.Name ) {
+        case "Food":
+          tokenSearchTextArray.push["food token"];
+          break;
+        case "Treasure":
+          tokenSearchTextArray.push("treasure token");
+          break;
+        default:
+          tokenSearchTextArray = this.createTokenSearchString( token );
+          break;
+      }
+      this.cardsThatMakeTokens.forEach((card: ScryfallCard)=>{
+        card.oracle_text = card.oracle_text ? card.oracle_text.toLowerCase() : card.oracle_text;
+        let hasAllSearchTerms: boolean = true;
+        for ( var i = 0; i < tokenSearchTextArray.length; i++ ) {
+          if ( card.oracle_text && !card.oracle_text.includes(tokenSearchTextArray[i].toLowerCase()) ) {
+            hasAllSearchTerms = false;
+            break;
+          }
+        }
+        if(hasAllSearchTerms){
+          console.log(tokenSearchTextArray)
+          console.log(card.name)
+          token.CreatedBy.push(card);
+        }
+        
+      });
 
-      //token.CreatedBy = this.cardsThatMakeTokens.find(card => {card.oracle_text.includes(tokenSearchText)});
-      //token.Editions = 
 
+console.log(token.CreatedBy)
     } );
   }
 
-  createTokenSearchString( token: Token ): string {
-    let tokenSearchText = token.Power + "/" + token.Toughness + " ";
-    if ( token.Colors ) {
-      tokenSearchText += "colorless"
+  createTokenSearchString( token: Token ): string[] {
+    let tokenSearchTextArray = ["create"];
+    if ( token.Power && token.Toughness && token.Power != "*" && token.Toughness != "*" ) {
+      tokenSearchTextArray.push(token.Power + "/" + token.Toughness + " ");
+    }
+    else{
+      //Stuff with varialble power needs to be checked
+    }
+
+    if ( !token.Colors ) {
+      tokenSearchTextArray.push("colorless");
+    }
+    else if(token.Colors.length === 5 ){
+      tokenSearchTextArray.push("all colors");
     }
     else {
-      token.Colors.forEach( color => {
-        console.log( color.toString() );
+      token.Colors.forEach( ( color: ScryfallColor, i: number ) => {
+        switch ( color ) {
+          case ScryfallColor.W:
+            tokenSearchTextArray.push("white");
+            break;
+          case ScryfallColor.U:
+            tokenSearchTextArray.push("blue");
+            break;
+          case ScryfallColor.B:
+            tokenSearchTextArray.push("black");
+            break;
+          case ScryfallColor.R:
+            tokenSearchTextArray.push("red");
+            break;
+          case ScryfallColor.G:
+            tokenSearchTextArray.push("green");
+            break;
+        }
       } );
     }
 
-    return tokenSearchText;
+//TYPES: Dragon artifact creature enchantemnt token
+const typeLineHalves: string[] = token.TypeLine.split("\—");
+
+const types: string[] = typeLineHalves[0].split(" ");
+const subtypes: string = typeLineHalves[1]?.trim();
+
+tokenSearchTextArray.push(subtypes);
+
+types.forEach(type => {
+  if(type !== "Token"){
+    tokenSearchTextArray.push(type);
+  }
+  
+});
+
+//named?
+if(token.Name != subtypes){
+  tokenSearchTextArray.push("named " + token.Name)
+}
+    
+//with text
+
+    return tokenSearchTextArray;
 
   }
 
