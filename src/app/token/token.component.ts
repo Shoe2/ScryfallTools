@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ScryfallCard } from 'node_modules/scryfall/build/ScryfallCard';
 import { BehaviorSubject } from 'rxjs';
 import { ScryfallColor } from 'scryfall/build/ScryfallColor';
+import { environment } from '../../environments/environment';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
 import { Token } from '../token';
 
@@ -21,8 +22,8 @@ export class TokenComponent implements OnInit {
   constructor( private $http: HttpClient ) { }
 
   ngOnInit(): void {
-    this.getNextPageOfCards( "https://api.scryfall.com/cards/search?q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-is%3Apromo+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
-    this.getNextPageOfCards( "https://api.scryfall.com/cards/search?q=o%3Acreate+include%3Aextras+-t%3Aemblem+-border%3Agold+&unique=cards", true, "card" );
+    this.getNextPageOfCards( environment.prefix + "q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-is%3Apromo+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
+    this.getNextPageOfCards( environment.prefix + "q=o%3Acreate+include%3Aextras+-t%3Aemblem+-border%3Agold+&unique=cards", true, "card" );
     this.loading.subscribe( () => {
       if ( this.loadingSource.value > 0 && this.subscriptions.length === this.loadingSource.value ) {
         this.subscriptions.forEach( subscription => subscription.unsubscribe() );
@@ -47,7 +48,7 @@ export class TokenComponent implements OnInit {
               this.tokens = [];
             }
 
-            response.data.forEach( ( token: ScryfallCard, index: number ) => {
+            (<ScryfallCard[]>response.data).forEach( ( token: ScryfallCard, index: number ) => {
               if ( token.card_faces && token.card_faces.length > 1 ) {
                 token.card_faces.forEach( ( face ) => {
                   if ( face.name != "Horror" ) { //Hack to remove BU horror token face tht is falsly colorless in scryfall data
@@ -90,7 +91,7 @@ export class TokenComponent implements OnInit {
             if ( clearOldData ) {
               this.cardsThatMakeTokens = [];
             }
-            this.cardsThatMakeTokens = this.cardsThatMakeTokens.concat( response.data );
+            this.cardsThatMakeTokens = this.cardsThatMakeTokens.concat( <ScryfallCard[]>response.data );
             this.loadingSource.next( this.loadingSource.value + 1 );
 
           }

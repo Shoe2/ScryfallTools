@@ -1,1 +1,31 @@
-<p>tribal works!</p>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Creature Type</th>
+        <th scope="col">Cards w/ Type</th>
+        <th scope="col">Commanders</th>
+        <th scope="col">Makes Tokens</th>
+        <th scope="col">Turns Into Type</th>
+        <th scope="col">Hozes Type</th>
+        <th scope="col">Tribal Effects/Lords</th>
+        <th scope="col">Viability</th>
+        <th scope="col" class="silver" >Un-Cards w/ Type</th>
+        <th scope="col" class="silver">Un-Commanders</th>
+        <th scope="col" class="silver">Un-Tribal Effects/Lords</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tribe of creatureTypes">
+        <th scope="col">{{tribe.creatureType}}</td>
+        <td scope="col"><a>{{tribe.cardsWithType}}</a></td>
+        <td scope="col"><a>{{tribe.commandersWithType}}</a></td>
+        <td scope="col"><a>{{tribe.makesTokensOfType}}</a></td>
+        <td scope="col"><a>{{tribe.turnsIntoCreatureOfType}}</a></td>
+        <td scope="col"><a>{{tribe.hozesType}}</a></td>
+        <td scope="col"><a>{{tribe.lordsOfType}}</a></td>
+        <td scope="col" class="silver"><a>{{tribe.silverBorderedCardsWithType}}</a></td>
+        <td scope="col" class="silver"><a>{{tribe.silverBorderedCommanders}}</a></td>
+        <td scope="col" class="silver"><a>{{tribe.silverBorderedLords}}</a></td>
+      </tr>
+    </tbody>
+  </table>
