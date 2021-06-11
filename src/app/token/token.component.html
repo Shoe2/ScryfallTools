@@ -1,6 +1,6 @@
 <div *ngIf="isLoading">LOADING....</div>
 <table class="table">
-    <thead>
+    <thead class="thead-dark">
       <tr>
         <!-- <th scope="col">Owned</th>
         <th scope="col">Wanted</th> -->
@@ -13,23 +13,23 @@
         <th scope="col">Cards that Create</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table-striped">
       <tr *ngFor="let token of tokens">
         <!-- <td scope="col"><input type="number" [(ngModel)]="token.Owned"/></td>
         <td scope="col"><input type="number" [(ngModel)]="token.Wanted"/></td> -->
         <td scope="col"><span *ngIf="token.Power && token.Toughness">{{token.Power}}/{{token.Toughness}}</span></td>
-        <td scope="col"><span *ngFor="let color of token.Colors">{{color}},</span></td>
+        <td scope="col"><span *ngFor="let color of token.Colors" class="color-{{color}}">{{color}}</span></td>
         <td scope="col">{{token.Name}}</td>
         <td scope="col">{{token.TypeLine | slice: 5 : token.TypeLine.length}}</td>
         <td scope="col">{{token.Text}}</td>
         <!-- <td scope="col"><span *ngFor="let edition of token.Editions">{{edition}},</span></td> -->
         <td scope="col">
-            <div *ngIf="token?.CreatedBy?.length < 9">
-                <span *ngFor="let card of token.CreatedBy">{{card.name}},</span>
-            </div>
+            <!-- <div *ngIf="token?.CreatedBy?.length < 9"> -->
+                <span *ngFor="let card of token.CreatedBy">{{card.name}}, </span>
+            <!-- </div>
             <div *ngIf="token?.CreatedBy?.length > 9">
                 {{token.CreatedBy.length}}
-            </div>
+            </div> -->
         </td>
       </tr>
     </tbody>
