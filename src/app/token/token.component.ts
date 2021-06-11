@@ -12,12 +12,11 @@ import { Token } from '../token';
  * ISUES *
  * - double faced cards that make a token on the back (Nissa, Vastwood Seer)
  * - cards that make tokens that almost match keywords (flying angel warrior and flying plus vigilance angel warrior...etc)
+ * - Tomb of Urami shows as a vanilla demon
+   -  Eyes of the Wisent -- says blue in the text but not part of token gen
 
  * - adventures IE Flaxen Intruder
  * - Sarpadian Empires, Vol. VII
- *  - Rite of Belzenlok,Rite of Belzenlok,
- * - X/X creatures, X/N creatures and N/X creatures
- * - Tomb of Urami shows as a vanilla demon
  * - several cards create enchantment zombies that should not (see Nevinrayyl)
  * _________________________________________________________
  * OKAY TO NOT WORK"
@@ -48,46 +47,31 @@ token.component.ts:227 Dune-Brood Nephilim
 token.component.ts:227 Dungeon Master
 token.component.ts:227 Elephant Resurgence
 token.component.ts:227 Errand of Duty
-
-
-----------------------------------------------
-token.component.ts:227 Death Mutation
-token.component.ts:227 Eyes of the Wisent
-2token.component.ts:227 Fable of Wolf and Owl
-token.component.ts:227 Fathom Fleet Captain
-token.component.ts:227 Flesh Carver
-token.component.ts:227 Garth One-Eye
-token.component.ts:227 Gelatinous Genesis
 token.component.ts:227 Generated Horizons
-token.component.ts:227 Gloomwidow's Feast
 token.component.ts:227 Gorilla Tactics
-token.component.ts:227 Grakmaw, Skyclave Ravager
 token.component.ts:227 Gunk Slug
 token.component.ts:227 Handy Dandy Clone Machine
 token.component.ts:227 Haunted Angel
 token.component.ts:227 Hazezon Tamar
-token.component.ts:227 Hedron Fields of Agadeem
 token.component.ts:227 Homarid Spawning Bed
-token.component.ts:227 Huatli, Warrior Poet
 token.component.ts:227 Hunted Horror
-token.component.ts:227 Hydra Broodmaster
 token.component.ts:227 Imaginary Friends
-token.component.ts:227 Inscription of Insight
-token.component.ts:227 It of the Horrid Swarm
-token.component.ts:227 Jund
+Infernal Genesis
 token.component.ts:227 Jungle Patrol
 token.component.ts:227 Keeper of the Beasts
 token.component.ts:227 Kjeldoran Home Guard
-token.component.ts:227 Kresh the Bloodbraided Avatar
 token.component.ts:227 Lolth, Spider Queen
+
+----------------------------------------------
+token.component.ts:227 Death Mutation
+2token.component.ts:227 Fable of Wolf and Owl
+token.component.ts:227 Gloomwidow's Feast
+token.component.ts:227 It of the Horrid Swarm
+token.component.ts:227 Jund
 token.component.ts:227 Lucille
-token.component.ts:227 Marath, Will of the Wild
-token.component.ts:227 Martyr of Dusk
-2token.component.ts:227 Mascot Exhibition
-token.component.ts:227 Maskwood Nexus
+2token.component.ts:227 Mascot Exhibition -- only shows for Inkling
 token.component.ts:227 Master of the Hunt
 token.component.ts:227 Master of Waves
-token.component.ts:227 Mavren Fein, Dusk Apostle
 token.component.ts:227 Metallurgic Summonings
 token.component.ts:227 Miming Slime
 token.component.ts:227 Mirrored Lotus
@@ -95,7 +79,6 @@ token.component.ts:227 Mongrel Pack
 token.component.ts:227 Monkey Cage
 token.component.ts:227 Murgish Cemetery
 token.component.ts:227 Mystic Genesis
-token.component.ts:227 Nacatl War-Pride
 token.component.ts:227 Nuisance Engine
 token.component.ts:227 Ooze Flux
 token.component.ts:227 Ooze Garden
@@ -115,7 +98,6 @@ token.component.ts:227 Primal Vigor
 token.component.ts:227 Profane Transfusion
 token.component.ts:227 Promise of Power
 token.component.ts:227 Pure Reflection
-token.component.ts:227 Purphoros's Intervention
 token.component.ts:227 Pursued Whale
 token.component.ts:227 Queen's Commission
 token.component.ts:227 Questing Phelddagrif
@@ -355,7 +337,11 @@ export class TokenComponent implements OnInit {
       if(!clueToken.CreatedBy.includes(card))
       clueToken.CreatedBy.push( card );
     }
-    if ( card.oracle_text.toLocaleLowerCase().includes( 'that\'s a copy' ) || card.oracle_text.toLocaleLowerCase().includes( 'that are copies' ) ) {
+    if ( card.oracle_text.toLocaleLowerCase().includes( 'that\'s a copy' ) 
+    || card.oracle_text.toLocaleLowerCase().includes( 'that are copies' )
+    || card.oracle_text.toLocaleLowerCase().includes( 'create a copy' )
+    || card.oracle_text.toLocaleLowerCase().includes( 'tokens that are copies' )
+     ) {
       createsNothing = false;
       const copyToken = this.tokens.find( token => token.Name === 'Copy' );
       if(!copyToken.CreatedBy.includes(card))
@@ -412,22 +398,33 @@ export class TokenComponent implements OnInit {
 
   processPowerAndToughness( cardOracleText: string, token: Token ) {
 
-    if ( cardOracleText.includes( token.Power + "\/" + token.Toughness ) ) {
-      return true;
-    } else if ( token.Power === '*' || token.Toughness === '*' ) {
+    if ( token.Power === '*' || token.Toughness === '*' ) {
       //NOT WORKING COMPLETELY
       let powerMatches = false;
       let toughnessMatches = false;
-      powerMatches = (cardOracleText.includes( token.Power + "\/" ))
-      || (token.Power === '*' && !cardOracleText.toLocaleLowerCase().includes( 'X\/' ))
+
+      powerMatches = (token.Power === '*' && cardOracleText.includes( 'X\/' ))
       || (token.Power === '*' && ( cardOracleText.toLocaleLowerCase().includes( 'equal' ) && token.Power === '*' && cardOracleText.toLocaleLowerCase().includes( 'power' ) ));
 
-      toughnessMatches = (cardOracleText.includes( token.Toughness + "\/" ))
-      || (token.Toughness === '*' && !cardOracleText.toLocaleLowerCase().includes( 'X\/' ))
+      toughnessMatches = (token.Toughness === '*' && cardOracleText.includes( '\/X' ))
       || (token.Toughness === '*' && ( cardOracleText.toLocaleLowerCase().includes( 'equal' ) && token.Toughness === '*' && cardOracleText.toLocaleLowerCase().includes( 'toughness' )));
 
+      if(token.Power != '*')
+      powerMatches = cardOracleText.includes( token.Power + "\/X" );
+      
+    if(token.Toughness != '*'){
+            toughnessMatches = cardOracleText.includes( "X\/" + token.Toughness );
+    }
+
+//       if(cardOracleText.includes('X/1')){
+// //console.log(powerMatches)
+//         console.log(toughnessMatches)
+//       }
+        
       return powerMatches && toughnessMatches;
 
+    } else if ( token.Power !== '*' && token.Toughness !== '*' && cardOracleText.includes( token.Power + "\/" + token.Toughness ) ) {
+      return true;
     }
   }
 
