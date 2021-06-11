@@ -25,6 +25,7 @@ token.component.ts:227 Adrix and Nev, Twincasters
 token.component.ts:227 Anointed Procession
 token.component.ts:227 Crafty Cutpurse
 token.component.ts:227 Doubling Season
+token.component.ts:227 Esix, Fractal Bloom
 
 _______________________________________________
 
@@ -43,17 +44,14 @@ token.component.ts:227 Caribou Range
 token.component.ts:227 Carrion
 token.component.ts:227 Diamond Kaleidoscope
 token.component.ts:227 Drizzt Do'Urden
+token.component.ts:227 Dune-Brood Nephilim
+token.component.ts:227 Dungeon Master
+token.component.ts:227 Elephant Resurgence
+token.component.ts:227 Errand of Duty
+
 
 ----------------------------------------------
 token.component.ts:227 Death Mutation
-token.component.ts:227 Devastating Summons
-token.component.ts:227 Dune-Brood Nephilim
-token.component.ts:227 Dungeon Master
-token.component.ts:227 Elenda, the Dusk Rose
-token.component.ts:227 Elephant Resurgence
-token.component.ts:227 Errand of Duty
-token.component.ts:227 Esix, Fractal Bloom
-token.component.ts:227 Experimental Overload
 token.component.ts:227 Eyes of the Wisent
 2token.component.ts:227 Fable of Wolf and Owl
 token.component.ts:227 Fathom Fleet Captain
@@ -324,6 +322,7 @@ export class TokenComponent implements OnInit {
               && tokenData.TypeLine === tokenData.TypeLine
           );
           if ( tempTokens.length === 1 ) {
+            if(!tempTokens[ 0 ].CreatedBy.includes(card))
             tempTokens[ 0 ].CreatedBy.push( card );
           }
           else {
@@ -340,19 +339,27 @@ export class TokenComponent implements OnInit {
     let createsNothing = true;
     if ( card.oracle_text.includes( 'Food' ) ) {
       createsNothing = false;
-      this.tokens.find( token => token.Name === 'Food' ).CreatedBy.push( card );
+      const foodToken = this.tokens.find( token => token.Name === 'Food' )
+      if(!foodToken.CreatedBy.includes(card))
+      foodToken.CreatedBy.push( card );
     }
     if ( card.oracle_text.includes( 'Treasure' ) ) {
       createsNothing = false;
-      this.tokens.find( token => token.Name === 'Treasure' ).CreatedBy.push( card );
+      const treasureToken = this.tokens.find( token => token.Name === 'Treasure' );
+      if(!treasureToken.CreatedBy.includes(card))
+      treasureToken.CreatedBy.push( card );
     }
     if ( card.oracle_text.includes( 'Clue' ) || card.oracle_text.includes( 'Investigate' ) ) {
       createsNothing = false;
-      this.tokens.find( token => token.Name === 'Clue' ).CreatedBy.push( card );
+      const clueToken = this.tokens.find( token => token.Name === 'Clue' )
+      if(!clueToken.CreatedBy.includes(card))
+      clueToken.CreatedBy.push( card );
     }
     if ( card.oracle_text.toLocaleLowerCase().includes( 'that\'s a copy' ) || card.oracle_text.toLocaleLowerCase().includes( 'that are copies' ) ) {
       createsNothing = false;
-      this.tokens.find( token => token.Name === 'Copy' ).CreatedBy.push( card );
+      const copyToken = this.tokens.find( token => token.Name === 'Copy' );
+      if(!copyToken.CreatedBy.includes(card))
+      copyToken.CreatedBy.push( card );
     }
 
 
@@ -373,6 +380,7 @@ export class TokenComponent implements OnInit {
     if ( tempToken && tempToken.length ) {
       createsNothing = false;
       for ( let token of tempToken ) {
+        if(!token.CreatedBy.includes(card))
         token.CreatedBy.push( card );
       }
     }
