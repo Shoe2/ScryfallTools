@@ -10,148 +10,33 @@ import { Token } from '../token';
 
 /**
  * ISUES *
- * - double faced cards that make a token on the back (Nissa, Vastwood Seer)
- * - cards that make tokens that almost match keywords (flying angel warrior and flying plus vigilance angel warrior...etc)
- * - Tomb of Urami shows as a vanilla demon
-   -  Eyes of the Wisent -- says blue in the text but not part of token gen
-
- * - adventures IE Flaxen Intruder
- * - Sarpadian Empires, Vol. VII
- * - several cards create enchantment zombies that should not (see Nevinrayyl)
- * _________________________________________________________
- * OKAY TO NOT WORK"
-token.component.ts:227 Adrix and Nev, Twincasters
-token.component.ts:227 Anointed Procession
-token.component.ts:227 Crafty Cutpurse
-token.component.ts:227 Doubling Season
-token.component.ts:227 Esix, Fractal Bloom
-
-_______________________________________________
-
-DONT EXSIST YET
- * - cards that make tokens that do not exsist 
- *    * Abian, Luvion Usurper
-      token.component.ts:227 Balduvian Dead
-      token.component.ts:227 Baru, Fist of Krosa
-      token.component.ts:227 Basalt Golem
-      token.component.ts:227 Blessed Sanctuary
-token.component.ts:227 Bone Rattler
-token.component.ts:227 Boris Devilboon
-token.component.ts:227 Bottle of Suleiman
-token.component.ts:227 Broken Visage
-token.component.ts:227 Caribou Range
-token.component.ts:227 Carrion
-token.component.ts:227 Diamond Kaleidoscope
-token.component.ts:227 Drizzt Do'Urden
-token.component.ts:227 Dune-Brood Nephilim
-token.component.ts:227 Dungeon Master
-token.component.ts:227 Elephant Resurgence
-token.component.ts:227 Errand of Duty
-token.component.ts:227 Generated Horizons
-token.component.ts:227 Gorilla Tactics
-token.component.ts:227 Gunk Slug
-token.component.ts:227 Handy Dandy Clone Machine
-token.component.ts:227 Haunted Angel
-token.component.ts:227 Hazezon Tamar
-token.component.ts:227 Homarid Spawning Bed
-token.component.ts:227 Hunted Horror
-token.component.ts:227 Imaginary Friends
-Infernal Genesis
-token.component.ts:227 Jungle Patrol
-token.component.ts:227 Keeper of the Beasts
-token.component.ts:227 Kjeldoran Home Guard
-token.component.ts:227 Lolth, Spider Queen
-
-----------------------------------------------
-token.component.ts:227 Death Mutation
-2token.component.ts:227 Fable of Wolf and Owl
-token.component.ts:227 Gloomwidow's Feast
-token.component.ts:227 It of the Horrid Swarm
-token.component.ts:227 Jund
-token.component.ts:227 Lucille
-2token.component.ts:227 Mascot Exhibition -- only shows for Inkling
-token.component.ts:227 Master of the Hunt
-token.component.ts:227 Master of Waves
-token.component.ts:227 Metallurgic Summonings
-token.component.ts:227 Miming Slime
-token.component.ts:227 Mirrored Lotus
-token.component.ts:227 Mongrel Pack
-token.component.ts:227 Monkey Cage
-token.component.ts:227 Murgish Cemetery
-token.component.ts:227 Mystic Genesis
-token.component.ts:227 Nuisance Engine
-token.component.ts:227 Ooze Flux
-token.component.ts:227 Ooze Garden
-token.component.ts:227 Ophiomancer
-token.component.ts:227 Ovinomancer
-token.component.ts:227 Oyobi, Who Split the Heavens
-token.component.ts:227 Paladin of the Bloodstained
-token.component.ts:227 Parallel Lives
-token.component.ts:227 Penumbra Bobcat
-token.component.ts:227 Penumbra Kavu
-token.component.ts:227 Phantasmal Sphere
-token.component.ts:227 Phelddagrif
-token.component.ts:227 Phyrexian Rebirth
-token.component.ts:227 Pick Your Poison
-token.component.ts:227 Planewide Celebration
-token.component.ts:227 Primal Vigor
-token.component.ts:227 Profane Transfusion
-token.component.ts:227 Promise of Power
-token.component.ts:227 Pure Reflection
-token.component.ts:227 Pursued Whale
-token.component.ts:227 Queen's Commission
-token.component.ts:227 Questing Phelddagrif
-token.component.ts:227 Rally the Horde
-token.component.ts:227 Rapid Prototyper
-token.component.ts:227 Raptor Hatchling
-token.component.ts:227 Regisaur Alpha
-token.component.ts:227 Reign of the Pit
-token.component.ts:227 Riftmarked Knight
-token.component.ts:227 Rin and Seri, Inseparable
-token.component.ts:227 Riptide Replicator
-token.component.ts:227 Rukh Egg
-token.component.ts:227 Saproling Burst
-token.component.ts:227 Sarpadian Empires, Vol. VII
-token.component.ts:227 Seed Guardian
-token.component.ts:227 Sek'Kuar, Deathkeeper
-token.component.ts:227 Selesnya Loft Gardens
-token.component.ts:227 Serpent Generator
-token.component.ts:227 Serra the Benevolent
-token.component.ts:227 Skyclave Apparition
-token.component.ts:227 Slime Molding
-token.component.ts:227 Snake Pit
-token.component.ts:227 Sound the Call
-token.component.ts:227 Spawning Pit
-token.component.ts:227 Spike Breeder
-token.component.ts:227 Spiny Starfish
-token.component.ts:227 Spirit Mirror
-token.component.ts:227 Splintering Wind
-token.component.ts:227 Spoils of Blood
-token.component.ts:227 Squire's Devotion
-token.component.ts:227 Stitcher Geralf
-token.component.ts:227 Summoning Station
-token.component.ts:227 Sword of Body and Mind
-token.component.ts:227 Symbol Status
-token.component.ts:227 Tatsumasa, the Dragon's Fang
-token.component.ts:227 Tetravus
-token.component.ts:227 The Bears of Littjara
-token.component.ts:227 The Iron Guardian Stirs
-token.component.ts:227 The Legend of Arena
-token.component.ts:227 Thundering Spineback
-token.component.ts:227 Time Sidewalk
-token.component.ts:227 Tivash, Gloom Summoner
-2token.component.ts:227 Trostani's Summoner
-token.component.ts:227 Uktabi Kong
-token.component.ts:227 Ulasht, the Hate Seed
-token.component.ts:227 Underworld Hermit
-token.component.ts:227 Volrath's Laboratory
-token.component.ts:227 Wall of Kelp
-token.component.ts:227 Wand of the Elements
-token.component.ts:227 Waste Land
-token.component.ts:227 Waylay
-token.component.ts:227 Wirefly Hive
-token.component.ts:227 Wurmcalling
- */
+ --- cards that make tokens that almost match keywords (flying angel warrior and flying plus vigilance angel warrior...etc)
+ *      Divine Visitation 
+ *      Mitotic Slime
+ *      Tomb of Urami
+ *      Starnheim Unleashed
+ *      Tempt with Vengeance
+--- Sarpadian Empires, Vol. VII       
+--- Pursued Whale
+--- Rukh Egg
+---Serra the Benevolent
+--- Garruk Relentless // Garruk, the Veil-Cursed
+--- several cards create enchantment zombies that should not (see Nevinrayyl)
+--- Makes one token that exsists and one that does not
+        Evil Comes to Fruition, 
+        Finale of Glory, 
+        One Dozen Eyes
+-- makes 2 tokens of different colors or mentions a color in a wierd place
+        Hold the Perimeter, 
+        Mascot Exhibition 
+        Riftmarked Knight
+        Rin and Seri, Inseparable
+        Underworld Hermit
+        Trostani's summoner
+ -----All colors is broke
+        Planewide Celebration
+        _________________________________________________________
+*/
 
 @Component( {
   selector: 'app-token',
@@ -163,9 +48,85 @@ export class TokenComponent implements OnInit {
   subscriptions = [];
   tokens: Token[] = [];
   cardsThatMakeTokens: ScryfallCard[] = [];
+  orphanedCards: ScryfallCard[] = [];
   loadingSource = new BehaviorSubject<number>( 0 );
   loading = this.loadingSource.asObservable();
   isLoading = true;
+
+  oldCardsThatDontMakeTokensNames = [
+    "Abian, Luvion Usurper",
+    "Balduvian Dead",
+    "Baru, Fist of Krosa",
+    "Basalt Golem",
+    "Blessed Sanctuary",
+    "Bone Rattler",
+    "Boris Devilboon",
+    "Bottle of Suleiman",
+    "Broken Visage",
+    "Caribou Range",
+    "Carrion",
+    "Diamond Kaleidoscope",
+    "Dune-Brood Nephilim",
+    "Dungeon Master",
+    "Elephant Resurgence",
+    "Errand of Duty",
+    "Generated Horizons",
+    "Gorilla Tactics",
+    "Gunk Slug",
+    "Handy Dandy Clone Machine",
+    "Haunted Angel",
+    "Hazezon Tamar",
+    "Homarid Spawning Bed",
+    "Hunted Horror",
+    "Imaginary Friends",
+    "Infernal Genesis",
+    "Jungle Patrol",
+    "Keeper of the Beasts",
+    "Kjeldoran Home Guard",
+    "Master of the Hunt",
+    "Mirrored Lotus",
+    "Mongrel Pack",
+    "Monkey Cage",
+    "Nuisance Engine",
+    "Ophiomancer",
+    "Ovinomancer",
+    "Oyobi, Who Split the Heavens",
+    "Penumbra Bobcat",
+    "Penumbra Kavu",
+    "Phantasmal Sphere",
+    "Phelddagrif",
+    "Pick Your Poison",
+    "Pure Reflection",
+    "Questing Phelddagrif",
+    "Rally the Horde",
+    "Riptide Replicator",
+    "Saproling Burst",
+    "Sek'Kuar, Deathkeeper",
+    "Serpent Generator",
+    "Skirk Ridge Exhumer",
+    "Sound the Call",
+    "Spawning Pit",
+    "Spike Breeder",
+    "Spiny Starfish",
+    "Spirit Mirror",
+    "Splintering Wind",
+    "Summoning Station",
+    "Symbol Status",
+    "Tatsumasa, the Dragon's Fang",
+    "Tetravus",
+    "The Iron Guardian Stirs",
+    "The Legend of Arena",
+    "Time Sidewalk",
+    "Uktabi Kong",
+    "Volrath's Laboratory",
+    "Wall of Kelp",
+    "Wand of the Elements",
+    "Waste Land",
+    "Waylay",
+    "Wirefly Hive",
+    "Wurmcalling"
+  ]
+
   constructor( private $http: HttpClient ) { }
 
   ngOnInit(): void {
@@ -284,12 +245,12 @@ export class TokenComponent implements OnInit {
   associateCardsWithTokens() {
     this.isLoading = true;
     this.cardsThatMakeTokens.forEach( ( card: ScryfallCard, index: number ) => {
-      if ( card.oracle_text ) {
-        this.tokensThisCardMakes( card );
+      card.name === "Flaxen Intruder" ? console.log( card ) : [];
 
-        if ( index === this.cardsThatMakeTokens.length - 1 ) {
-          this.isLoading = false;
-        }
+      this.tokensThisCardMakes( card );
+
+      if ( index === this.cardsThatMakeTokens.length - 1 ) {
+        this.isLoading = false;
       }
     } );
 
@@ -304,8 +265,8 @@ export class TokenComponent implements OnInit {
               && tokenData.TypeLine === tokenData.TypeLine
           );
           if ( tempTokens.length === 1 ) {
-            if(!tempTokens[ 0 ].CreatedBy.includes(card))
-            tempTokens[ 0 ].CreatedBy.push( card );
+            if ( !tempTokens[ 0 ].CreatedBy.includes( card ) )
+              tempTokens[ 0 ].CreatedBy.push( card );
           }
           else {
             this.findTokensMadeByCardOracleText( card );
@@ -319,63 +280,89 @@ export class TokenComponent implements OnInit {
 
   findTokensMadeByCardOracleText( card: ScryfallCard ) {
     let createsNothing = true;
-    if ( card.oracle_text.includes( 'Food' ) ) {
+    let allFacesText = '';
+
+    if ( card.card_faces && card.card_faces.length > 1 ) {
+      for ( const faces of card.card_faces ) {
+        allFacesText += faces.oracle_text;
+      }
+    } else {
+      allFacesText = card.oracle_text;
+    }
+
+
+    if ( allFacesText.includes( 'Food' ) ) {
       createsNothing = false;
       const foodToken = this.tokens.find( token => token.Name === 'Food' )
-      if(!foodToken.CreatedBy.includes(card))
-      foodToken.CreatedBy.push( card );
+      if ( !foodToken.CreatedBy.includes( card ) )
+        foodToken.CreatedBy.push( card );
     }
-    if ( card.oracle_text.includes( 'Treasure' ) ) {
+    if ( allFacesText.includes( 'Treasure' ) ) {
       createsNothing = false;
       const treasureToken = this.tokens.find( token => token.Name === 'Treasure' );
-      if(!treasureToken.CreatedBy.includes(card))
-      treasureToken.CreatedBy.push( card );
+      if ( !treasureToken.CreatedBy.includes( card ) )
+        treasureToken.CreatedBy.push( card );
     }
-    if ( card.oracle_text.includes( 'Clue' ) || card.oracle_text.includes( 'Investigate' ) ) {
+    if ( allFacesText.includes( 'Walker token' ) ) {
+      createsNothing = false;
+      const walkerToken = this.tokens.find( token => token.Name === 'Walker' );
+      if ( !walkerToken.CreatedBy.includes( card ) )
+        walkerToken.CreatedBy.push( card );
+    }
+    if ( allFacesText.includes( 'Clue' ) || allFacesText.includes( 'Investigate' ) ) {
       createsNothing = false;
       const clueToken = this.tokens.find( token => token.Name === 'Clue' )
-      if(!clueToken.CreatedBy.includes(card))
-      clueToken.CreatedBy.push( card );
+      if ( !clueToken.CreatedBy.includes( card ) )
+        clueToken.CreatedBy.push( card );
     }
-    if ( card.oracle_text.toLocaleLowerCase().includes( 'that\'s a copy' ) 
-    || card.oracle_text.toLocaleLowerCase().includes( 'that are copies' )
-    || card.oracle_text.toLocaleLowerCase().includes( 'create a copy' )
-    || card.oracle_text.toLocaleLowerCase().includes( 'tokens that are copies' )
-     ) {
+    if ( allFacesText.toLocaleLowerCase().includes( 'that\'s a copy' )
+      || allFacesText.toLocaleLowerCase().includes( 'that are copies' )
+      || allFacesText.toLocaleLowerCase().includes( 'create a copy' )
+      || allFacesText.toLocaleLowerCase().includes( 'tokens that are copies' )
+    ) {
       createsNothing = false;
       const copyToken = this.tokens.find( token => token.Name === 'Copy' );
-      if(!copyToken.CreatedBy.includes(card))
-      copyToken.CreatedBy.push( card );
+      if ( !copyToken.CreatedBy.includes( card ) )
+        copyToken.CreatedBy.push( card );
     }
 
 
 
     let tempToken = this.tokens.filter( token =>
-      card.oracle_text.includes( token.Name )
-      && this.processTokenText( card.oracle_text, token.Text.replace( /\s?\(.*\)/g, '' ) )
-      && this.processPowerAndToughness( card.oracle_text, token )
-      && this.processTypeLine( token.TypeLine, card.oracle_text )
-      && this.compareColors( card.oracle_text, token.Colors )
+      allFacesText.includes( token.Name )
+      && this.processTokenText( allFacesText, token.Text.replace( /\s?\(.*\)/g, '' ) )
+      && this.processPowerAndToughness( allFacesText, token )
+      && this.processTypeLine( token.TypeLine, allFacesText )
+      && this.compareColors( allFacesText, token.Colors )
     );
 
+    card.name === "Flaxen Intruder" ? console.log( card ) : [];
 
-    // if(card.name === "Baffling End"){
-    //   console.log(tempToken)
-    // }
+    if ( card.name === "Planewide Celebration" ) {
+      console.log( tempToken )
+      console.log( this.compareColors( allFacesText, [ ScryfallColor.W, ScryfallColor.U, ScryfallColor.B, ScryfallColor.R, ScryfallColor.G ] ) )
+    }
 
     if ( tempToken && tempToken.length ) {
       createsNothing = false;
       for ( let token of tempToken ) {
-        if(!token.CreatedBy.includes(card))
-        token.CreatedBy.push( card );
+        if ( !token.CreatedBy.includes( card ) )
+          token.CreatedBy.push( card );
       }
     }
 
-    else {
-      if ( createsNothing )
-        // CREATE TOKEN or IGNORE ME
-        console.log( card.name );
+    else if ( createsNothing ) {
+      // CREATE TOKEN or IGNORE ME
+      const cardTextLowerCase = allFacesText.toLocaleLowerCase();
+      if (
+        !cardTextLowerCase.includes( 'would create' )
+        && !( cardTextLowerCase.includes( 'would be created' ) )
+        && !this.oldCardsThatDontMakeTokensNames.includes( card.name )
+
+      )
+        this.orphanedCards.push( card );
     }
+
 
     tempToken = null;
 
@@ -403,24 +390,24 @@ export class TokenComponent implements OnInit {
       let powerMatches = false;
       let toughnessMatches = false;
 
-      powerMatches = (token.Power === '*' && cardOracleText.includes( 'X\/' ))
-      || (token.Power === '*' && ( cardOracleText.toLocaleLowerCase().includes( 'equal' ) && token.Power === '*' && cardOracleText.toLocaleLowerCase().includes( 'power' ) ));
+      powerMatches = ( token.Power === '*' && cardOracleText.includes( 'X\/' ) )
+        || ( token.Power === '*' && ( cardOracleText.toLocaleLowerCase().includes( 'equal' ) && token.Power === '*' && cardOracleText.toLocaleLowerCase().includes( 'power' ) ) );
 
-      toughnessMatches = (token.Toughness === '*' && cardOracleText.includes( '\/X' ))
-      || (token.Toughness === '*' && ( cardOracleText.toLocaleLowerCase().includes( 'equal' ) && token.Toughness === '*' && cardOracleText.toLocaleLowerCase().includes( 'toughness' )));
+      toughnessMatches = ( token.Toughness === '*' && cardOracleText.includes( '\/X' ) )
+        || ( token.Toughness === '*' && ( cardOracleText.toLocaleLowerCase().includes( 'equal' ) && token.Toughness === '*' && cardOracleText.toLocaleLowerCase().includes( 'toughness' ) ) );
 
-      if(token.Power != '*')
-      powerMatches = cardOracleText.includes( token.Power + "\/X" );
-      
-    if(token.Toughness != '*'){
-            toughnessMatches = cardOracleText.includes( "X\/" + token.Toughness );
-    }
+      if ( token.Power != '*' )
+        powerMatches = cardOracleText.includes( token.Power + "\/X" );
 
-//       if(cardOracleText.includes('X/1')){
-// //console.log(powerMatches)
-//         console.log(toughnessMatches)
-//       }
-        
+      if ( token.Toughness != '*' ) {
+        toughnessMatches = cardOracleText.includes( "X\/" + token.Toughness );
+      }
+
+      //       if(cardOracleText.includes('X/1')){
+      // //console.log(powerMatches)
+      //         console.log(toughnessMatches)
+      //       }
+
       return powerMatches && toughnessMatches;
 
     } else if ( token.Power !== '*' && token.Toughness !== '*' && cardOracleText.includes( token.Power + "\/" + token.Toughness ) ) {
@@ -451,45 +438,56 @@ export class TokenComponent implements OnInit {
   }
 
   compareColors( cardText: string, tokenColors: ScryfallColor[] ) {
-    if ( tokenColors.length === 5 && cardText.toLocaleLowerCase().includes( "all colors" ) ) {
-      return true;
-    }
-    else if ( tokenColors.length === 0 && cardText.toLocaleLowerCase().includes( "colorless" ) ) {
-      return true;
-    } else {
-      if (
-        ( tokenColors.includes( ScryfallColor.W ) && !cardText.toLocaleLowerCase().includes( "white" ) )
-        || ( !tokenColors.includes( ScryfallColor.W ) && cardText.toLocaleLowerCase().includes( "white" ) )
-      ) {
-        return false;
+    const isCardImFuckingWith = cardText.toLocaleLowerCase().includes( 'transform' );
+    //const choppedOnCreateText = cardText.toLocaleLowerCase().split( 'create' );
+    let choppedOnCreateText = cardText.match( /(c|C)reate(s?) [\w|\s|\d|/|’|,]*\./g );
+    !choppedOnCreateText ? choppedOnCreateText = [cardText] : [];
+    //isCardImFuckingWith ? console.log( choppedOnCreateText.length ) : []
+    //const tokenCreationText = choppedOnCreateText.length > 2 ? choppedOnCreateText.slice( 1 ).join( ' ' ) : choppedOnCreateText[ choppedOnCreateText.length - 1 ];
+    cardText.includes("8/8") ? console.log( choppedOnCreateText ): [];
+    //TODO: Broken for cards that say create twice
+    for ( const tokenCreationText of choppedOnCreateText ) {
+      if ( tokenColors.length === 5 && tokenCreationText.toLocaleLowerCase().includes( "all colors" ) ) {
+        return true;
       }
-      if (
-        ( tokenColors.includes( ScryfallColor.U ) && !cardText.toLocaleLowerCase().includes( "blue" ) )
-        || ( !tokenColors.includes( ScryfallColor.U ) && cardText.toLocaleLowerCase().includes( "blue" ) )
-      ) {
-        return false;
-      }
-      if (
-        tokenColors.includes( ScryfallColor.B ) && !cardText.toLocaleLowerCase().includes( "black" )
-        || ( !tokenColors.includes( ScryfallColor.B ) && cardText.toLocaleLowerCase().includes( "black" ) )
-      ) {
-        return false;
-      }
-      if (
-        tokenColors.includes( ScryfallColor.R ) && !cardText.toLocaleLowerCase().includes( " red" )
-        || ( !tokenColors.includes( ScryfallColor.R ) && cardText.toLocaleLowerCase().includes( " red" ) )
-      ) {
-        return false;
-      }
-      if (
-        tokenColors.includes( ScryfallColor.G ) && !cardText.toLocaleLowerCase().includes( "green" )
-        || ( !tokenColors.includes( ScryfallColor.G ) && cardText.toLocaleLowerCase().includes( "green" ) )
-      ) {
-        return false;
-      }
+      else if ( tokenColors.length === 0 && tokenCreationText.toLocaleLowerCase().includes( "colorless" ) ) {
+        return true;
+      } else {
+        if (
+          ( tokenColors.includes( ScryfallColor.W ) && !tokenCreationText.toLocaleLowerCase().includes( " white" ) )
+          || ( !tokenColors.includes( ScryfallColor.W ) && tokenCreationText.toLocaleLowerCase().includes( " white" ) )
+        ) {
+          return false;
+        }
+        if (
+          ( tokenColors.includes( ScryfallColor.U ) && !tokenCreationText.toLocaleLowerCase().includes( " blue" ) )
+          || ( !tokenColors.includes( ScryfallColor.U ) && tokenCreationText.toLocaleLowerCase().includes( " blue" ) )
+        ) {
+          return false;
+        }
+        if (
+          tokenColors.includes( ScryfallColor.B ) && !tokenCreationText.toLocaleLowerCase().includes( " black" )
+          || ( !tokenColors.includes( ScryfallColor.B ) && tokenCreationText.toLocaleLowerCase().includes( " black" ) )
+        ) {
+          return false;
+        }
+        if (
+          tokenColors.includes( ScryfallColor.R ) && !tokenCreationText.toLocaleLowerCase().includes( " red" )
+          || ( !tokenColors.includes( ScryfallColor.R ) && tokenCreationText.toLocaleLowerCase().includes( " red" ) )
+        ) {
+          return false;
+        }
+        if (
+          tokenColors.includes( ScryfallColor.G ) && !tokenCreationText.toLocaleLowerCase().includes( " green" )
+          || ( !tokenColors.includes( ScryfallColor.G ) && tokenCreationText.toLocaleLowerCase().includes( " green" ) )
+        ) {
+          return false;
+        }
 
-      return true;
+        return true;
+      }
     }
+
 
   }
 
