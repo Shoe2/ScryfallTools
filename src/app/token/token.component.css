@@ -1,36 +1,31 @@
-.color-U{
-    background-color: blue;
-    color: white;
+.symbol {
     border-radius: 100%;
     border: 1px solid black;
     font-weight: bold;
 }
+
+.color-U{
+    background-color: blue;
+    color: white;
+    padding: 2px 8px;
+}
 .color-B{
-    font-weight: bold;
     background-color: black;
     color: white;
-    border-radius: 100%;
-    border: 1px solid black;
-    font-weight: bold;
+    padding: 2px 8px;
 }
 .color-R{
     background-color: red;
     color: white;
-    border-radius: 100%;
-    border: 1px solid black;
-    font-weight: bold;
+    padding: 2px 8px;
 }
 .color-G{
     background-color: green;
     color: white;
-    border-radius: 100%;
-    font-weight: bold;
-    border: 1px solid black;
+    padding: 2px 8px;
 }
 .color-W{
     background-color: white;
     color: black;
-    border-radius: 100%;
-    border: 1px solid black;
-    font-weight: bold;
+    padding: 2px 4px;
 }

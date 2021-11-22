@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { TokenComponent } from './token/token.component';
 import { TribalComponent } from './tribal/tribal.component';
 import { HomeComponent } from './home/home.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { HomeComponent } from './home/home.component';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

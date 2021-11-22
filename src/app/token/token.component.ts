@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ScryfallCard } from 'node_modules/scryfall/build/ScryfallCard';
@@ -29,12 +30,8 @@ import { Token } from '../token';
 -- makes 2 tokens of different colors or mentions a color in a wierd place
         Hold the Perimeter, 
         Mascot Exhibition 
-        Riftmarked Knight
-        Rin and Seri, Inseparable
         Underworld Hermit
         Trostani's summoner
- -----All colors is broke
-        Planewide Celebration
         _________________________________________________________
 */
 
@@ -76,6 +73,7 @@ export class TokenComponent implements OnInit {
     "Handy Dandy Clone Machine",
     "Haunted Angel",
     "Hazezon Tamar",
+    "Helm of Kaldra",
     "Homarid Spawning Bed",
     "Hunted Horror",
     "Imaginary Friends",
@@ -117,6 +115,7 @@ export class TokenComponent implements OnInit {
     "The Iron Guardian Stirs",
     "The Legend of Arena",
     "Time Sidewalk",
+    "Tomb of Urami",
     "Uktabi Kong",
     "Volrath's Laboratory",
     "Wall of Kelp",
@@ -127,11 +126,15 @@ export class TokenComponent implements OnInit {
     "Wurmcalling"
   ]
 
-  constructor( private $http: HttpClient ) { }
+  constructor( private $http: HttpClient, private datePipe: DatePipe ) { }
 
   ngOnInit(): void {
-    this.getNextPageOfCards( environment.prefix + "q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-is%3Apromo+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
-    this.getNextPageOfCards( environment.prefix + "q=fo%3Acreate+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+&unique=cards", true, "card" );
+    this.getNextPageOfCards( environment.prefix + "q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
+    // +-is%3Apromo no longer removing promos? is this ok?
+    this.getNextPageOfCards(
+      environment.prefix +
+      `q=fo%3Acreate+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+date<%3D${ this.makeDateStringForTomorrow() }+&unique=cards`
+      , true, "card" );
     this.loading.subscribe( () => {
       if ( this.loadingSource.value > 0 && this.subscriptions.length === this.loadingSource.value ) {
         console.log( 'data loaded' );
@@ -144,6 +147,13 @@ export class TokenComponent implements OnInit {
 
   ngOnDestrory() {
     this.subscriptions.forEach( subscription => subscription.unsubscribe() );
+  }
+
+  makeDateStringForTomorrow() {
+    const today = new Date()
+    const tomorrow = new Date( today )
+    tomorrow.setDate( tomorrow.getDate() + 1 )
+    return this.datePipe.transform( tomorrow, 'YYYY-MM-dd' );
   }
 
   getNextPageOfCards( url: string, clearOldData = false, tokenOrCard: string ) {
@@ -161,13 +171,14 @@ export class TokenComponent implements OnInit {
             ( <ScryfallCard[]>response.data ).forEach( ( token: ScryfallCard, index: number ) => {
               if ( token.card_faces && token.card_faces.length > 1 ) {
                 token.card_faces.forEach( ( face: ScryfallCardFace ) => {
-                  if ( face.name != "Horror" ) { //Hack to remove BU horror token face tht is falsly colorless in scryfall data
+                  if ( face.name != "Horror" && !( face.name === 'Mowu' && !face.colors.length ) ) {
+                    //Hack to remove BU horror token and Mowu face that are falsly colorless in scryfall data
                     const tokenData = new Token(
                       face.power,
                       face.toughness,
                       face.colors,
                       face.name,
-                      face.type_line,
+                      face.type_line.includes( 'Hound' ) ? face.type_line.replace( 'Hound', 'Dog' ) : face.type_line,
                       face.oracle_text ? face.oracle_text.replace( /\s?\(.*\)/g, '' ) : '',
                       face.image_uris
                     )
@@ -303,6 +314,12 @@ export class TokenComponent implements OnInit {
       if ( !treasureToken.CreatedBy.includes( card ) )
         treasureToken.CreatedBy.push( card );
     }
+    if ( allFacesText.includes( 'Gold token' ) ) {
+      createsNothing = false;
+      const goldToken = this.tokens.find( token => token.Name === 'Gold' );
+      if ( !goldToken.CreatedBy.includes( card ) )
+        goldToken.CreatedBy.push( card );
+    }
     if ( allFacesText.includes( 'Walker token' ) ) {
       createsNothing = false;
       const walkerToken = this.tokens.find( token => token.Name === 'Walker' );
@@ -336,11 +353,16 @@ export class TokenComponent implements OnInit {
       && this.compareColors( allFacesText, token.Colors )
     );
 
-    card.name === "Flaxen Intruder" ? console.log( card ) : [];
-
-    if ( card.name === "Planewide Celebration" ) {
-      console.log( tempToken )
-      console.log( this.compareColors( allFacesText, [ ScryfallColor.W, ScryfallColor.U, ScryfallColor.B, ScryfallColor.R, ScryfallColor.G ] ) )
+    if ( card.name === "Godsire" ) {
+      // HACK because Godsire has not been updated in oracle to match every other token generator EVER
+      tempToken = this.tokens.filter(
+        token => token.Name === "Beast"
+          && token.Power === "8"
+          && token.Toughness === "8"
+          && token.Colors.includes( ScryfallColor.G )
+          && token.Colors.includes( ScryfallColor.W )
+          && token.Colors.includes( ScryfallColor.R )
+      )
     }
 
     if ( tempToken && tempToken.length ) {
@@ -374,6 +396,10 @@ export class TokenComponent implements OnInit {
     let types = typeLine.split( ' ' );
     types = types.filter( text => text != '—' && text != 'Token' );
 
+    if ( !typeLine.includes( "Legendary" ) && cardOracleText.toLocaleLowerCase().includes( ", a legendary" ) ) {
+      return false;
+    }
+
     for ( let type of types ) {
       if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() ) ) {
         cardDoesMakeTokenWithTypes = false;
@@ -403,11 +429,6 @@ export class TokenComponent implements OnInit {
         toughnessMatches = cardOracleText.includes( "X\/" + token.Toughness );
       }
 
-      //       if(cardOracleText.includes('X/1')){
-      // //console.log(powerMatches)
-      //         console.log(toughnessMatches)
-      //       }
-
       return powerMatches && toughnessMatches;
 
     } else if ( token.Power !== '*' && token.Toughness !== '*' && cardOracleText.includes( token.Power + "\/" + token.Toughness ) ) {
@@ -416,18 +437,43 @@ export class TokenComponent implements OnInit {
   }
 
   processTokenText( cardText: string, tokenText: string ) {
-    tokenText = tokenText.replace( /\s?\(.*\)/g, '' );
-    if ( tokenText.length > 0 ) {
-      let linesOfText = tokenText.split( '\n' );
 
-      for ( let line of linesOfText ) {
-        let lineSegments = line.split( ',' );
-        for ( let segment of lineSegments ) {
-          if ( !cardText.toLocaleLowerCase().includes( segment.toLocaleLowerCase() ) ) {
-            return false;
+    tokenText = tokenText.replace( /\s?\(.*\)/g, '' );
+
+    if ( tokenText === "creature is all colors." && cardText.includes( "all colors" ) ) {
+      return true;
+    }
+
+    if ( tokenText && tokenText.length > 0 ) {
+      cardText = cardText.toLocaleLowerCase();
+      const cardTextTokenKeywordsSubstring = 
+        cardText.match( /with [\w|\s|\d|/|’|,]*\./g ) ? cardText.match( /with [\w|\s|\d|/|’|,]*\./g ) : [];
+      const cardTokenTextGranter = cardText.match( /\“.*\”/g ) ? cardText.match( /\“.*\”/g ) : [];
+      const cardTextRelevantBits = cardTokenTextGranter.concat(cardTextTokenKeywordsSubstring);
+
+
+      tokenText = tokenText.toLocaleLowerCase();
+      let linesOfTextToken = tokenText.split( '\n' );
+      let keywordsOnToken = linesOfTextToken[ 0 ].split( ',' );
+      linesOfTextToken.shift()
+      const lineSegmentsOnToken = keywordsOnToken.concat( linesOfTextToken );
+
+
+// Check to see if token text is on card
+      for ( let segmentOnToken of lineSegmentsOnToken ) {
+        let includesLineSegment = false;
+        for ( let cardTextBit of cardTextRelevantBits){
+          if ( cardTextBit.includes( segmentOnToken.toLocaleLowerCase())){
+            includesLineSegment = true;
           }
         }
+
+        if(!includesLineSegment){
+          return false;
+        }
       }
+
+
 
       return true;
 
@@ -438,19 +484,21 @@ export class TokenComponent implements OnInit {
   }
 
   compareColors( cardText: string, tokenColors: ScryfallColor[] ) {
-    const isCardImFuckingWith = cardText.toLocaleLowerCase().includes( 'transform' );
+    if ( tokenColors.length === 5 && cardText.toLocaleLowerCase().includes( "all colors" ) ) {
+      return true;
+    }
+    const isCardImFuckingWith = cardText.toLocaleLowerCase().includes( 'hoose four.' );
     //const choppedOnCreateText = cardText.toLocaleLowerCase().split( 'create' );
-    let choppedOnCreateText = cardText.match( /(c|C)reate(s?) [\w|\s|\d|/|’|,]*\./g );
-    !choppedOnCreateText ? choppedOnCreateText = [cardText] : [];
+    let choppedOnCreateText = cardText.match( /(c|C)reate(s?) [\w|\s|\d|/|’|,]*token/g );
+    // /(c|C)reate(s?) [\w|\s|\d|/|’|,]*[(with)|\.]/g
+    !choppedOnCreateText ? choppedOnCreateText = [ cardText ] : [];
     //isCardImFuckingWith ? console.log( choppedOnCreateText.length ) : []
     //const tokenCreationText = choppedOnCreateText.length > 2 ? choppedOnCreateText.slice( 1 ).join( ' ' ) : choppedOnCreateText[ choppedOnCreateText.length - 1 ];
-    cardText.includes("8/8") ? console.log( choppedOnCreateText ): [];
+    cardText.includes( "hoose four." ) ? console.log( choppedOnCreateText ) : [];
     //TODO: Broken for cards that say create twice
+    // cardText.includes("all colors") ? console.log(cardText)
     for ( const tokenCreationText of choppedOnCreateText ) {
-      if ( tokenColors.length === 5 && tokenCreationText.toLocaleLowerCase().includes( "all colors" ) ) {
-        return true;
-      }
-      else if ( tokenColors.length === 0 && tokenCreationText.toLocaleLowerCase().includes( "colorless" ) ) {
+      if ( tokenColors.length === 0 && tokenCreationText.toLocaleLowerCase().includes( "colorless" ) ) {
         return true;
       } else {
         if (
