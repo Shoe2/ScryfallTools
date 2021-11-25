@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody class="table-striped">
-      <tr *ngFor="let token of tokens">
+      <tr *ngFor="let token of tokens" [ngClass]="{highlighted : token?.CreatedBy?.length > 9}">
         <!-- <td scope="col"><input type="number" [(ngModel)]="token.Owned"/></td>
         <td scope="col"><input type="number" [(ngModel)]="token.Wanted"/></td> -->
         <td scope="col"><span *ngIf="token.Power && token.Toughness">{{token.Power}}/{{token.Toughness}}</span></td>
@@ -28,12 +28,12 @@
         <td scope="col">{{token.Text}}</td>
         <!-- <td scope="col"><span *ngFor="let edition of token.Editions">{{edition}},</span></td> -->
         <td scope="col">
-            <!-- <div *ngIf="token?.CreatedBy?.length < 9"> -->
+            <div *ngIf="token?.CreatedBy?.length < 9">
                 <span *ngFor="let card of token.CreatedBy">({{card.name}}), </span>
-            <!-- </div>
+            </div>
             <div *ngIf="token?.CreatedBy?.length > 9">
                 {{token.CreatedBy.length}}
-            </div> -->
+            </div>
         </td>
       </tr>
     </tbody>

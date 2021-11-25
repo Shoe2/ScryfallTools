@@ -4,6 +4,10 @@
     font-weight: bold;
 }
 
+.highlighted {
+    background-color: yellow;
+}
+
 .color-U{
     background-color: blue;
     color: white;
