@@ -21,8 +21,8 @@
     "@angular/router": "~11.2.3",
     "bootstrap": "^4.6.0",
     "rxjs": "^6.6.6",
-    "scryfall": "^0.9.7",
     "scryfall-client": "^0.18.6",
+    "scryfall-ts": "^1.3.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

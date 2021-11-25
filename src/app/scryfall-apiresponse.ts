@@ -1,4 +1,4 @@
-import { ScryfallCard } from "scryfall/build/ScryfallCard";
+import { ScryfallCard } from "scryfall-ts/build/ScryfallCard";
 
 export class ScryfallAPIResponse {
     data: ScryfallCard[] | string[];

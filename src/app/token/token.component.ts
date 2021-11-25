@@ -1,30 +1,25 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ScryfallCard } from 'node_modules/scryfall/build/ScryfallCard';
+import { ScryfallCard } from 'node_modules/scryfall-ts/build/ScryfallCard';
 import { BehaviorSubject } from 'rxjs';
-import { ScryfallCardFace } from 'scryfall/build/ScryfallCardFace';
-import { ScryfallColor } from 'scryfall/build/ScryfallColor';
+import { ScryfallCardFace } from 'scryfall-ts/build/ScryfallCardFace';
+import { ScryfallColor } from 'scryfall-ts/build/ScryfallColor';
 import { environment } from '../../environments/environment';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
 import { Token } from '../token';
-import { RelatedCard } from './related-card';
 
 /**
  * ISUES *
---- Arterial Alchemy,
 Blight Mound,
 Combat Calligrapher,
 Dance with Devils,
 Dovescape,
 Elenda, the Dusk Rose,
-Glass-Cast Heart,
 Make Mischief,
-Markov Enforcer,
 Pest Infestation,
 Rapacious One,
 Sarpadian Empires, Vol. VII,
-Strefan, Maurer Progenitor,
 Zurzoth, Chaos Rider,     
 --- Makes one token that exsists and one that does not
         Evil Comes to Fruition, 
@@ -266,7 +261,7 @@ export class TokenComponent implements OnInit {
 
   tokensThisCardMakes( card: ScryfallCard ) {
     if ( card.all_parts && card.all_parts ) {
-      card.all_parts.forEach( ( relatedCard: RelatedCard ) => {
+      card.all_parts.forEach( ( relatedCard ) => {
         if ( relatedCard.component === "token" ) {
           let tempTokens = this.tokens.filter(
             tokenData => tokenData.Name === relatedCard.name
@@ -321,7 +316,12 @@ export class TokenComponent implements OnInit {
       allFacesText = card.oracle_text;
     }
 
-
+    if ( allFacesText.includes( 'Blood' ) ) {
+      createsNothing = false;
+      const bloodToken = this.tokens.find( token => token.Name === 'Blood' )
+      if ( !bloodToken.CreatedBy.includes( card ) )
+        bloodToken.CreatedBy.push( card );
+    }
     if ( allFacesText.includes( 'Food' ) ) {
       createsNothing = false;
       const foodToken = this.tokens.find( token => token.Name === 'Food' )

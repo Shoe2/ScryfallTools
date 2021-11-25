@@ -1,6 +1,6 @@
-import { ScryfallCard } from "scryfall/build/ScryfallCard";
-import { ScryfallColor } from "scryfall/build/ScryfallColor";
-import { ScryfallImages } from "scryfall/build/ScryfallImages";
+import { ScryfallCard } from "scryfall-ts/build/ScryfallCard";
+import { ScryfallColor } from "scryfall-ts/build/ScryfallColor";
+import { ScryfallImages } from "scryfall-ts/build/ScryfallImages";
 
 export class Token {
     Owned: number;
