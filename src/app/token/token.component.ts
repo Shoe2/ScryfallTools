@@ -25,13 +25,27 @@ export class TokenComponent implements OnInit {
   loadingSource = new BehaviorSubject<number>( 0 );
   loading = this.loadingSource.asObservable();
   isLoading = true;
+// Valkyrie Harbinger is wrong in scryfall
 
   // TODO: 1/1 red elemental is made by 0 cards
+  //TODO: 4/4 R and U Elemental aslo
+  // 1/1 GW soldier with training
+  // Inkling
+  // 6/1 g insect with shroud
+  //2/2	B	Knight	Creature — Knight	Protection from white, haste Flanking
+  //8/8	U	Kraken	Creature — Kraken	Hexproof
+  //2/2	B	Pirate	Creature — Pirate	Menace
+  //0/2	G	Plant	Creature — Plant	Defender
+  //2/2	U	Shapeshifter	Creature — Shapeshifter	Changeling
+  //1/2	G	Spider	Creature — Spider	Reach
+  //3/2	RW	Spirit	Creature — Spirit	
+  // COLORED TREASURE?! --- Back face colors are messing crap up
 
   // IGNORE, these aren't really cards
   ignore = [
     "Winchester Draft // Winchester Draft (cont'd)",
-    "Totally Lost in Translation // Totally Lost in Translation (cont'd)"
+    "Totally Lost in Translation // Totally Lost in Translation (cont'd)",
+    "Energy Reserve"
   ];
 
   problemCards = problemCards;
