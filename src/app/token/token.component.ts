@@ -26,6 +26,8 @@ export class TokenComponent implements OnInit {
   loading = this.loadingSource.asObservable();
   isLoading = true;
 
+  // TODO: 1/1 red elemental is made by 0 cards
+
   // IGNORE, these aren't really cards
   ignore = [
     "Winchester Draft // Winchester Draft (cont'd)",
