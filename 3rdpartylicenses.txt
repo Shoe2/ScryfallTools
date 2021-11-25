@@ -315,7 +315,7 @@ Apache-2.0
  
 
 
-scryfall
+scryfall-ts
 MIT
 MIT License
 
