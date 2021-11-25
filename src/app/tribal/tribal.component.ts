@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
 import {Observable} from 'rxjs';
-import { TribalData } from '../tribal-data';
+import { TribalData } from './types/tribal-data';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -32,23 +32,23 @@ export class TribalComponent implements OnInit {
     this.creatureTypeData.forEach((tribe: TribalData)=>{
       const observables: Observable<ScryfallAPIResponse>[] = [];
       //cards
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
       //commanders
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType + "+is%3Acommander"))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType + "+is%3Acommander"))
       //token makers
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=o%3A%2Fcreate%28s%29%3F+.*" + tribe.creatureType + "+.*creature+token%2F" + "-is%3Afunny"))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=o%3A%2Fcreate%28s%29%3F+.*" + tribe.creatureType + "+.*creature+token%2F" + "-is%3Afunny"))
       //becomes
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=o%3A%2Fbecome%28s%29%3F+.*" + tribe.creatureType + ".%2F" + "-is%3Afunny" ))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=o%3A%2Fbecome%28s%29%3F+.*" + tribe.creatureType + ".%2F" + "-is%3Afunny" ))
       //hozes
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
       //lords
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
       //funny lords
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
       //funny
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType +  "+is%3Afunny"))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType +  "+is%3Afunny"))
       //funny commanders
-      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "q=t%3A" + tribe.creatureType + "+is%3Afunny+is%3Acommander"))
+      observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType + "+is%3Afunny+is%3Acommander"))
       //      (o:/\belf\b/ or o:/\belves\b/) o:create
 
     });
