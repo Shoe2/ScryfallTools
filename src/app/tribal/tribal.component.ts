@@ -16,10 +16,10 @@ export class TribalComponent implements OnInit {
   constructor(private $http: HttpClient) { }
 
   ngOnInit(): void {
-    this.$http.get("GET https://api.scryfall.com/catalog/creature-types")
+    this.$http.get("https://api.scryfall.com/catalog/creature-types")
     .subscribe( (response: ScryfallAPIResponse) =>{
     this.creatureTypeData = [];  
-    (<string[]>response.data).forEach((tribe: string, i: number)=>{
+    (response.data as string[]).forEach((tribe: string, i: number)=>{
       this.creatureTypeData.push(new TribalData(tribe));
       if(i === response.data.length -1){
         this.computeTribalStats();
