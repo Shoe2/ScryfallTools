@@ -29,7 +29,7 @@
         <!-- <td scope="col"><span *ngFor="let edition of token.Editions">{{edition}},</span></td> -->
         <td scope="col">
             <div *ngIf="token?.CreatedBy?.length < 9">
-                <span *ngFor="let card of token.CreatedBy">({{card.name}}), </span>
+                <span *ngFor="let card of token.CreatedBy" class="badge card-pill" [ngClass]="card.rarity">{{card.name}}</span>
             </div>
             <div *ngIf="token?.CreatedBy?.length > 9">
                 {{token.CreatedBy.length}}

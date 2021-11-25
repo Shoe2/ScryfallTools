@@ -8,27 +8,42 @@
     background-color: yellow;
 }
 
-.color-U{
+.card-pill {
+    margin: 3px;
+}
+
+.uncommon {
+    background-color: darkgrey;
+}
+.rare {
+    background-color: goldenrod;
+}
+.mythic {
+    background-color: orange;
+}
+
+.color-U {
     background-color: blue;
     color: white;
     padding: 2px 8px;
 }
-.color-B{
+.color-B,
+.common {
     background-color: black;
     color: white;
     padding: 2px 8px;
 }
-.color-R{
+.color-R {
     background-color: red;
     color: white;
     padding: 2px 8px;
 }
-.color-G{
+.color-G {
     background-color: green;
     color: white;
     padding: 2px 8px;
 }
-.color-W{
+.color-W {
     background-color: white;
     color: black;
     padding: 2px 4px;
