@@ -8,30 +8,28 @@ import { ScryfallColor } from 'scryfall/build/ScryfallColor';
 import { environment } from '../../environments/environment';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
 import { Token } from '../token';
+import { RelatedCard } from './related-card';
 
 /**
  * ISUES *
- --- cards that make tokens that almost match keywords (flying angel warrior and flying plus vigilance angel warrior...etc)
- *      Divine Visitation 
- *      Mitotic Slime
- *      Tomb of Urami
- *      Starnheim Unleashed
- *      Tempt with Vengeance
---- Sarpadian Empires, Vol. VII       
---- Pursued Whale
---- Rukh Egg
----Serra the Benevolent
---- Garruk Relentless // Garruk, the Veil-Cursed
---- several cards create enchantment zombies that should not (see Nevinrayyl)
+--- Arterial Alchemy,
+Blight Mound,
+Combat Calligrapher,
+Dance with Devils,
+Dovescape,
+Elenda, the Dusk Rose,
+Glass-Cast Heart,
+Make Mischief,
+Markov Enforcer,
+Pest Infestation,
+Rapacious One,
+Sarpadian Empires, Vol. VII,
+Strefan, Maurer Progenitor,
+Zurzoth, Chaos Rider,     
 --- Makes one token that exsists and one that does not
         Evil Comes to Fruition, 
         Finale of Glory, 
         One Dozen Eyes
--- makes 2 tokens of different colors or mentions a color in a wierd place
-        Hold the Perimeter, 
-        Mascot Exhibition 
-        Underworld Hermit
-        Trostani's summoner
         _________________________________________________________
 */
 
@@ -51,6 +49,8 @@ export class TokenComponent implements OnInit {
   isLoading = true;
 
   oldCardsThatDontMakeTokensNames = [
+    "Winchester Draft // Winchester Draft (cont'd)",
+    "Totally Lost in Translation // Totally Lost in Translation (cont'd)",
     "Abian, Luvion Usurper",
     "Balduvian Dead",
     "Baru, Fist of Krosa",
@@ -129,11 +129,11 @@ export class TokenComponent implements OnInit {
   constructor( private $http: HttpClient, private datePipe: DatePipe ) { }
 
   ngOnInit(): void {
-    this.getNextPageOfCards( environment.prefix + "q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
+    this.getNextPageOfCards( environment.prefix + "/search?q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
     // +-is%3Apromo no longer removing promos? is this ok?
     this.getNextPageOfCards(
       environment.prefix +
-      `q=fo%3Acreate+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+date<%3D${ this.makeDateStringForTomorrow() }+&unique=cards`
+      `/search?q=fo%3Acreate+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+date<%3D${ this.makeDateStringForTomorrow() }+&unique=cards`
       , true, "card" );
     this.loading.subscribe( () => {
       if ( this.loadingSource.value > 0 && this.subscriptions.length === this.loadingSource.value ) {
@@ -256,10 +256,7 @@ export class TokenComponent implements OnInit {
   associateCardsWithTokens() {
     this.isLoading = true;
     this.cardsThatMakeTokens.forEach( ( card: ScryfallCard, index: number ) => {
-      card.name === "Flaxen Intruder" ? console.log( card ) : [];
-
       this.tokensThisCardMakes( card );
-
       if ( index === this.cardsThatMakeTokens.length - 1 ) {
         this.isLoading = false;
       }
@@ -269,8 +266,8 @@ export class TokenComponent implements OnInit {
 
   tokensThisCardMakes( card: ScryfallCard ) {
     if ( card.all_parts && card.all_parts ) {
-      card.all_parts.forEach( ( relatedCard: ScryfallCardFace ) => {
-        if ( relatedCard.type_line.includes( 'Token' ) ) {
+      card.all_parts.forEach( ( relatedCard: RelatedCard ) => {
+        if ( relatedCard.component === "token" ) {
           let tempTokens = this.tokens.filter(
             tokenData => tokenData.Name === relatedCard.name
               && tokenData.TypeLine === tokenData.TypeLine
@@ -278,6 +275,25 @@ export class TokenComponent implements OnInit {
           if ( tempTokens.length === 1 ) {
             if ( !tempTokens[ 0 ].CreatedBy.includes( card ) )
               tempTokens[ 0 ].CreatedBy.push( card );
+          }
+          else if (relatedCard.type_line.includes('Token')){
+            this.getCardById(relatedCard.uri).subscribe((token: ScryfallCard)=>{
+              let tempTokens = this.tokens.filter(
+                tokenData => tokenData.Name === token.name
+                  && tokenData.TypeLine === token.type_line
+                  && tokenData.Text === token.oracle_text
+                  && tokenData.Power === token.power
+                  && tokenData.Toughness === token.toughness
+                  && this.compareColorsByArray(token.colors, tokenData.Colors)
+              );
+
+              if(card.name === "Mascot Exhibition"){
+                console.log(token)
+                console.log(tempTokens)
+              }
+
+              tempTokens.length === 1 ? tempTokens[0].CreatedBy.push(card) : [];
+            });
           }
           else {
             this.findTokensMadeByCardOracleText( card );
@@ -287,6 +303,10 @@ export class TokenComponent implements OnInit {
     } else {
       this.findTokensMadeByCardOracleText( card );
     }
+  }
+
+  getCardById(url: string){
+    return this.$http.get( url );
   }
 
   findTokensMadeByCardOracleText( card: ScryfallCard ) {
@@ -539,4 +559,16 @@ export class TokenComponent implements OnInit {
 
   }
 
+  compareColorsByArray(card1Colors: ScryfallColor[], card2Colors: ScryfallColor[]){
+    if(
+      ((card1Colors.includes(ScryfallColor.B) && card2Colors.includes(ScryfallColor.B)) || (!card1Colors.includes(ScryfallColor.B) && !card2Colors.includes(ScryfallColor.B)))
+      &&       ((card1Colors.includes(ScryfallColor.W) && card2Colors.includes(ScryfallColor.W)) || (!card1Colors.includes(ScryfallColor.W) && !card2Colors.includes(ScryfallColor.W)))
+      &&       ((card1Colors.includes(ScryfallColor.U) && card2Colors.includes(ScryfallColor.U)) || (!card1Colors.includes(ScryfallColor.U) && !card2Colors.includes(ScryfallColor.U)))
+      &&       ((card1Colors.includes(ScryfallColor.R) && card2Colors.includes(ScryfallColor.R)) || (!card1Colors.includes(ScryfallColor.R) && !card2Colors.includes(ScryfallColor.R)))
+      &&       ((card1Colors.includes(ScryfallColor.G) && card2Colors.includes(ScryfallColor.G)) || (!card1Colors.includes(ScryfallColor.G) && !card2Colors.includes(ScryfallColor.G)))
+    )
+    return true;
+
+    return false;
+  }
 }

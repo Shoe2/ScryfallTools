@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  prefix: "https://api.scryfall.com/cards/search?"
+  prefix: "https://api.scryfall.com/cards"
 };
 
 /*
