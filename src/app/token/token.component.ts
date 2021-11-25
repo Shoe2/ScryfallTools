@@ -9,25 +9,6 @@ import { environment } from '../../environments/environment';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
 import { Token } from '../token';
 
-/**
- * ISUES *
-Blight Mound,
-Combat Calligrapher,
-Dance with Devils,
-Dovescape,
-Elenda, the Dusk Rose,
-Make Mischief,
-Pest Infestation,
-Rapacious One,
-Sarpadian Empires, Vol. VII,
-Zurzoth, Chaos Rider,     
---- Makes one token that exsists and one that does not
-        Evil Comes to Fruition, 
-        Finale of Glory, 
-        One Dozen Eyes
-        _________________________________________________________
-*/
-
 @Component( {
   selector: 'app-token',
   templateUrl: './token.component.html',
@@ -43,6 +24,7 @@ export class TokenComponent implements OnInit {
   loading = this.loadingSource.asObservable();
   isLoading = true;
 
+  // IGNORE FOR NOW, MAKE OLD CARDS WORK LATER
   oldCardsThatDontMakeTokensNames = [
     "Winchester Draft // Winchester Draft (cont'd)",
     "Totally Lost in Translation // Totally Lost in Translation (cont'd)",
@@ -119,7 +101,25 @@ export class TokenComponent implements OnInit {
     "Waylay",
     "Wirefly Hive",
     "Wurmcalling"
-  ]
+  ];
+
+  // TODO: Fix These
+  problemCards = [
+    "Blight Mound",
+    "Combat Calligrapher",
+    "Dance with Devils",
+    "Dovescape",
+    "Elenda, the Dusk Rose",
+    "Make Mischief",
+    "Pest Infestation",
+    "Rapacious One",
+    "Sarpadian Empires, Vol. VII",
+    "Zurzoth, Chaos Rider",
+    // These create one exsisting token and one not-exsisting token
+    "Evil Comes to Fruition",
+    "Finale of Glory",
+    "One Dozen Eyes"
+  ];
 
   constructor( private $http: HttpClient, private datePipe: DatePipe ) { }
 
@@ -271,24 +271,24 @@ export class TokenComponent implements OnInit {
             if ( !tempTokens[ 0 ].CreatedBy.includes( card ) )
               tempTokens[ 0 ].CreatedBy.push( card );
           }
-          else if (relatedCard.type_line.includes('Token')){
-            this.getCardById(relatedCard.uri).subscribe((token: ScryfallCard)=>{
+          else if ( relatedCard.type_line.includes( 'Token' ) ) {
+            this.getCardById( relatedCard.uri ).subscribe( ( token: ScryfallCard ) => {
               let tempTokens = this.tokens.filter(
                 tokenData => tokenData.Name === token.name
                   && tokenData.TypeLine === token.type_line
                   && tokenData.Text === token.oracle_text
                   && tokenData.Power === token.power
                   && tokenData.Toughness === token.toughness
-                  && this.compareColorsByArray(token.colors, tokenData.Colors)
+                  && this.compareColorsByArray( token.colors, tokenData.Colors )
               );
 
-              if(card.name === "Mascot Exhibition"){
-                console.log(token)
-                console.log(tempTokens)
+              if ( card.name === "Mascot Exhibition" ) {
+                console.log( token )
+                console.log( tempTokens )
               }
 
-              tempTokens.length === 1 ? tempTokens[0].CreatedBy.push(card) : [];
-            });
+              tempTokens.length === 1 ? tempTokens[ 0 ].CreatedBy.push( card ) : [];
+            } );
           }
           else {
             this.findTokensMadeByCardOracleText( card );
@@ -300,7 +300,7 @@ export class TokenComponent implements OnInit {
     }
   }
 
-  getCardById(url: string){
+  getCardById( url: string ) {
     return this.$http.get( url );
   }
 
@@ -466,10 +466,10 @@ export class TokenComponent implements OnInit {
 
     if ( tokenText && tokenText.length > 0 ) {
       cardText = cardText.toLocaleLowerCase();
-      const cardTextTokenKeywordsSubstring = 
+      const cardTextTokenKeywordsSubstring =
         cardText.match( /with [\w|\s|\d|/|’|,]*\./g ) ? cardText.match( /with [\w|\s|\d|/|’|,]*\./g ) : [];
       const cardTokenTextGranter = cardText.match( /\“.*\”/g ) ? cardText.match( /\“.*\”/g ) : [];
-      const cardTextRelevantBits = cardTokenTextGranter.concat(cardTextTokenKeywordsSubstring);
+      const cardTextRelevantBits = cardTokenTextGranter.concat( cardTextTokenKeywordsSubstring );
 
 
       tokenText = tokenText.toLocaleLowerCase();
@@ -479,16 +479,16 @@ export class TokenComponent implements OnInit {
       const lineSegmentsOnToken = keywordsOnToken.concat( linesOfTextToken );
 
 
-// Check to see if token text is on card
+      // Check to see if token text is on card
       for ( let segmentOnToken of lineSegmentsOnToken ) {
         let includesLineSegment = false;
-        for ( let cardTextBit of cardTextRelevantBits){
-          if ( cardTextBit.includes( segmentOnToken.toLocaleLowerCase())){
+        for ( let cardTextBit of cardTextRelevantBits ) {
+          if ( cardTextBit.includes( segmentOnToken.toLocaleLowerCase() ) ) {
             includesLineSegment = true;
           }
         }
 
-        if(!includesLineSegment){
+        if ( !includesLineSegment ) {
           return false;
         }
       }
@@ -559,15 +559,15 @@ export class TokenComponent implements OnInit {
 
   }
 
-  compareColorsByArray(card1Colors: ScryfallColor[], card2Colors: ScryfallColor[]){
-    if(
-      ((card1Colors.includes(ScryfallColor.B) && card2Colors.includes(ScryfallColor.B)) || (!card1Colors.includes(ScryfallColor.B) && !card2Colors.includes(ScryfallColor.B)))
-      &&       ((card1Colors.includes(ScryfallColor.W) && card2Colors.includes(ScryfallColor.W)) || (!card1Colors.includes(ScryfallColor.W) && !card2Colors.includes(ScryfallColor.W)))
-      &&       ((card1Colors.includes(ScryfallColor.U) && card2Colors.includes(ScryfallColor.U)) || (!card1Colors.includes(ScryfallColor.U) && !card2Colors.includes(ScryfallColor.U)))
-      &&       ((card1Colors.includes(ScryfallColor.R) && card2Colors.includes(ScryfallColor.R)) || (!card1Colors.includes(ScryfallColor.R) && !card2Colors.includes(ScryfallColor.R)))
-      &&       ((card1Colors.includes(ScryfallColor.G) && card2Colors.includes(ScryfallColor.G)) || (!card1Colors.includes(ScryfallColor.G) && !card2Colors.includes(ScryfallColor.G)))
+  compareColorsByArray( card1Colors: ScryfallColor[], card2Colors: ScryfallColor[] ) {
+    if (
+      ( ( card1Colors.includes( ScryfallColor.B ) && card2Colors.includes( ScryfallColor.B ) ) || ( !card1Colors.includes( ScryfallColor.B ) && !card2Colors.includes( ScryfallColor.B ) ) )
+      && ( ( card1Colors.includes( ScryfallColor.W ) && card2Colors.includes( ScryfallColor.W ) ) || ( !card1Colors.includes( ScryfallColor.W ) && !card2Colors.includes( ScryfallColor.W ) ) )
+      && ( ( card1Colors.includes( ScryfallColor.U ) && card2Colors.includes( ScryfallColor.U ) ) || ( !card1Colors.includes( ScryfallColor.U ) && !card2Colors.includes( ScryfallColor.U ) ) )
+      && ( ( card1Colors.includes( ScryfallColor.R ) && card2Colors.includes( ScryfallColor.R ) ) || ( !card1Colors.includes( ScryfallColor.R ) && !card2Colors.includes( ScryfallColor.R ) ) )
+      && ( ( card1Colors.includes( ScryfallColor.G ) && card2Colors.includes( ScryfallColor.G ) ) || ( !card1Colors.includes( ScryfallColor.G ) && !card2Colors.includes( ScryfallColor.G ) ) )
     )
-    return true;
+      return true;
 
     return false;
   }
