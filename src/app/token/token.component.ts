@@ -7,7 +7,9 @@ import { ScryfallCardFace } from 'scryfall-ts/build/ScryfallCardFace';
 import { ScryfallColor } from 'scryfall-ts/build/ScryfallColor';
 import { environment } from '../../environments/environment';
 import { ScryfallAPIResponse } from '../scryfall-apiresponse';
-import { Token } from '../token';
+import { TokenService } from './services/token.service';
+import { Token } from './types/token';
+import { problemCards } from './types/problem-cards';
 
 @Component( {
   selector: 'app-token',
@@ -24,97 +26,15 @@ export class TokenComponent implements OnInit {
   loading = this.loadingSource.asObservable();
   isLoading = true;
 
-  // IGNORE FOR NOW, MAKE OLD CARDS WORK LATER
+  // IGNORE, these aren't really cards
   ignore = [
     "Winchester Draft // Winchester Draft (cont'd)",
     "Totally Lost in Translation // Totally Lost in Translation (cont'd)"
   ];
 
-  // TODO: Fix These
-  problemCards = [
-    // A HUGE PROBLEM ALL IT'S OWN
-    "Sarpadian Empires, Vol. VII",
+  problemCards = problemCards;
 
-    // These create one exsisting token and one not-exsisting token
-    "Evil Comes to Fruition",
-    "One Dozen Eyes",
-
-    //OLD and make no exsisting token
-    "Abian, Luvion Usurper",
-    "Balduvian Dead",
-    "Baru, Fist of Krosa",
-    "Basalt Golem",
-    "Blessed Sanctuary",
-    "Bone Rattler",
-    "Boris Devilboon",
-    "Bottle of Suleiman",
-    "Broken Visage",
-    "Caribou Range",
-    "Carrion",
-    "Diamond Kaleidoscope",
-    "Dune-Brood Nephilim",
-    "Dungeon Master",
-    "Elephant Resurgence",
-    "Errand of Duty",
-    "Generated Horizons",
-    "Gorilla Tactics",
-    "Gunk Slug",
-    "Handy Dandy Clone Machine",
-    "Haunted Angel",
-    "Hazezon Tamar",
-    "Helm of Kaldra",
-    "Homarid Spawning Bed",
-    "Hunted Horror",
-    "Imaginary Friends",
-    "Infernal Genesis",
-    "Jungle Patrol",
-    "Keeper of the Beasts",
-    "Kjeldoran Home Guard",
-    "Master of the Hunt",
-    "Mirrored Lotus",
-    "Mongrel Pack",
-    "Monkey Cage",
-    "Nuisance Engine",
-    "Ovinomancer",
-    "Oyobi, Who Split the Heavens",
-    "Penumbra Bobcat",
-    "Penumbra Kavu",
-    "Phantasmal Sphere",
-    "Phelddagrif",
-    "Pick Your Poison",
-    "Pure Reflection",
-    "Questing Phelddagrif",
-    "Rally the Horde",
-    "Riptide Replicator",
-    "Saproling Burst",
-    "Sek'Kuar, Deathkeeper",
-    "Serpent Generator",
-    "Skirk Ridge Exhumer",
-    "Sound the Call",
-    "Spawning Pit",
-    "Spike Breeder",
-    "Spiny Starfish",
-    "Spirit Mirror",
-    "Splintering Wind",
-    "Summoning Station",
-    "Symbol Status",
-    "Tatsumasa, the Dragon's Fang",
-    "Tetravus",
-    "The Iron Guardian Stirs",
-    "The Legend of Arena",
-    "Time Sidewalk",
-    "Tomb of Urami",
-    "Uktabi Kong",
-    "Volrath's Laboratory",
-    "Wall of Kelp",
-    "Wand of the Elements",
-    "Waste Land",
-    "Waylay",
-    "Wirefly Hive",
-    "Wurmcalling"
-  ];
-
-  constructor( private $http: HttpClient, private datePipe: DatePipe ) { }
+  constructor( private $http: HttpClient, private datePipe: DatePipe,  private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.getNextPageOfCards( environment.prefix + "/search?q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
@@ -210,35 +130,7 @@ export class TokenComponent implements OnInit {
   }
 
   dedupeTokens() {
-    const uniqueTokens: Token[] = [];
-
-    this.tokens.forEach( ( token ) => {
-      let isDupe = false;
-      if ( token.Text.includes( "This token can be used to represent a token that's a copy of a permanent." ) ) {
-        isDupe = true;
-      }
-
-      if ( token.Text ) {
-        token.Text = token.Text.replace( /\s?\(.*\)/g, '' );
-      }
-
-      for ( var i = 0; i < uniqueTokens.length; i++ ) {
-        if ( token.Name === uniqueTokens[ i ].Name &&
-          token.Power === uniqueTokens[ i ].Power &&
-          token.Toughness === uniqueTokens[ i ].Toughness &&
-          token.Colors.toString() === uniqueTokens[ i ].Colors.toString() &&
-          token.Text === uniqueTokens[ i ].Text &&
-          token.TypeLine === uniqueTokens[ i ].TypeLine
-        ) {
-          isDupe = true;
-          break;
-        }
-      }
-      if ( !isDupe )
-        uniqueTokens.push( token );
-    } )
-
-    this.tokens = uniqueTokens;
+    this.tokens = this.tokenService.dedupeTokens(this.tokens)
   }
 
   associateCardsWithTokens() {
@@ -379,6 +271,7 @@ export class TokenComponent implements OnInit {
         !cardTextLowerCase.includes( 'would create' )
         && !( cardTextLowerCase.includes( 'would be created' ) )
         && !this.ignore.includes( card.name )
+        && !this.problemCards.includes(card.name)
 
       )
         this.orphanedCards.push( card );
