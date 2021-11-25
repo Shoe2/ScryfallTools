@@ -25,27 +25,13 @@ export class TokenComponent implements OnInit {
   loadingSource = new BehaviorSubject<number>( 0 );
   loading = this.loadingSource.asObservable();
   isLoading = true;
-// Valkyrie Harbinger is wrong in scryfall
-
-  // TODO: 1/1 red elemental is made by 0 cards
-  //TODO: 4/4 R and U Elemental aslo
-  // 1/1 GW soldier with training
-  // Inkling
-  // 6/1 g insect with shroud
-  //2/2	B	Knight	Creature — Knight	Protection from white, haste Flanking
-  //8/8	U	Kraken	Creature — Kraken	Hexproof
-  //2/2	B	Pirate	Creature — Pirate	Menace
-  //0/2	G	Plant	Creature — Plant	Defender
-  //2/2	U	Shapeshifter	Creature — Shapeshifter	Changeling
-  //1/2	G	Spider	Creature — Spider	Reach
-  //3/2	RW	Spirit	Creature — Spirit	
-  // COLORED TREASURE?! --- Back face colors are messing crap up
 
   // IGNORE, these aren't really cards
   ignore = [
     "Winchester Draft // Winchester Draft (cont'd)",
     "Totally Lost in Translation // Totally Lost in Translation (cont'd)",
-    "Energy Reserve"
+    "Energy Reserve",
+    "City's Blessing",
   ];
 
   problemCards = problemCards;
@@ -95,14 +81,18 @@ export class TokenComponent implements OnInit {
             ( <ScryfallCard[]>response.data ).forEach( ( token: ScryfallCard, index: number ) => {
               if ( token.card_faces && token.card_faces.length > 1 ) {
                 token.card_faces.forEach( ( face: ScryfallCardFace ) => {
-                  if ( face.name != "Horror" && !( face.name === 'Mowu' && !face.colors.length ) ) {
+                  if ( 
+                    face.name != "Horror" 
+                    && !( face.name === 'Mowu' && !face.colors.length )
+                    &&  !(face.name === "Zombie" && !face.colors.length)
+                    ) {
                     //Hack to remove BU horror token and Mowu face that are falsly colorless in scryfall data
                     const tokenData = new Token(
                       face.power,
                       face.toughness,
-                      face.colors,
+                      face.name === 'Treasure' ? [] : face.colors,
                       face.name,
-                      face.type_line.includes( 'Hound' ) ? face.type_line.replace( 'Hound', 'Dog' ) : face.type_line,
+                      face.type_line,
                       face.oracle_text ? face.oracle_text.replace( /\s?\(.*\)/g, '' ) : '',
                       face.image_uris
                     )
@@ -161,6 +151,10 @@ export class TokenComponent implements OnInit {
   }
 
   tokensThisCardMakes( card: ScryfallCard ) {
+    if( this.ignore.includes( card.name ) || this.problemCards.includes(card.name)){
+      return;
+    }
+    
     if ( card.all_parts && card.all_parts ) {
       card.all_parts.forEach( ( relatedCard ) => {
         if ( relatedCard.component === "token" ) {
@@ -172,7 +166,7 @@ export class TokenComponent implements OnInit {
             if ( !tempTokens[ 0 ].CreatedBy.includes( card ) )
               tempTokens[ 0 ].CreatedBy.push( card );
           }
-          else if ( relatedCard.type_line.includes( 'Token' ) ) {
+          else if ( relatedCard.type_line.includes( 'Token' ) && card.name != 'Valkyrie Harbinger' && card.name != 'Rampage of the Valkyries') {
             this.getCardById( relatedCard.uri ).subscribe( ( token: ScryfallCard ) => {
               let tempTokens = this.tokens.filter(
                 tokenData => tokenData.Name === token.name
@@ -286,9 +280,6 @@ export class TokenComponent implements OnInit {
       if (
         !cardTextLowerCase.includes( 'would create' )
         && !( cardTextLowerCase.includes( 'would be created' ) )
-        && !this.ignore.includes( card.name )
-        && !this.problemCards.includes(card.name)
-
       )
         this.orphanedCards.push( card );
     }
@@ -299,7 +290,8 @@ export class TokenComponent implements OnInit {
   }
 
   processTypeLine( typeLine: string, cardOracleText: string ): boolean {
-    //WORKING?
+
+
     let cardDoesMakeTokenWithTypes = true;
     let types = typeLine.split( ' ' );
     types = types.filter( text => text != '—' && text != 'Token' );
@@ -309,11 +301,17 @@ export class TokenComponent implements OnInit {
     }
 
     for ( let type of types ) {
-      if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() ) ) {
+      if(cardOracleText.includes("Bird enchantment")){
+        console.log(type)
+      }
+      if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() + " ")) {
         cardDoesMakeTokenWithTypes = false;
         return cardDoesMakeTokenWithTypes;
       }
     };
+    if(cardOracleText.includes("enchantment creature") && !types.includes('Enchantment')){
+      cardDoesMakeTokenWithTypes = false;
+    }
     return cardDoesMakeTokenWithTypes;
   }
 

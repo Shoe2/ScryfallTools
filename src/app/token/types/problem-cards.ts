@@ -25,7 +25,10 @@ export const problemCards =
   "Dungeon Master",
   "Elephant Resurgence",
   "Errand of Duty",
+  // For now this makes 4/4 beasts, but eventually should make Phyrexian Beast tokens
+  "Ezuri's Predation",
   "Generated Horizons",
+  "Giant Caterpillar",
   "Gorilla Tactics",
   "Gunk Slug",
   "Handy Dandy Clone Machine",
