@@ -37,7 +37,6 @@ export class TokenComponent implements OnInit {
 
     // These create one exsisting token and one not-exsisting token
     "Evil Comes to Fruition",
-    "Finale of Glory",
     "One Dozen Eyes",
 
     //OLD and make no exsisting token
