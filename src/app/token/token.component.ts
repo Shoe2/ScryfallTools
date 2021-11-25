@@ -25,9 +25,22 @@ export class TokenComponent implements OnInit {
   isLoading = true;
 
   // IGNORE FOR NOW, MAKE OLD CARDS WORK LATER
-  oldCardsThatDontMakeTokensNames = [
+  ignore = [
     "Winchester Draft // Winchester Draft (cont'd)",
-    "Totally Lost in Translation // Totally Lost in Translation (cont'd)",
+    "Totally Lost in Translation // Totally Lost in Translation (cont'd)"
+  ];
+
+  // TODO: Fix These
+  problemCards = [
+    // A HUGE PROBLEM ALL IT'S OWN
+    "Sarpadian Empires, Vol. VII",
+
+    // These create one exsisting token and one not-exsisting token
+    "Evil Comes to Fruition",
+    "Finale of Glory",
+    "One Dozen Eyes",
+
+    //OLD and make no exsisting token
     "Abian, Luvion Usurper",
     "Balduvian Dead",
     "Baru, Fist of Krosa",
@@ -63,7 +76,6 @@ export class TokenComponent implements OnInit {
     "Mongrel Pack",
     "Monkey Cage",
     "Nuisance Engine",
-    "Ophiomancer",
     "Ovinomancer",
     "Oyobi, Who Split the Heavens",
     "Penumbra Bobcat",
@@ -101,20 +113,6 @@ export class TokenComponent implements OnInit {
     "Waylay",
     "Wirefly Hive",
     "Wurmcalling"
-  ];
-
-  // TODO: Fix These
-  problemCards = [
-    "Dance with Devils",
-    "Make Mischief",
-    "Rapacious One",
-    // A HUGE PROBLEM ALL IT'S OWN
-    "Sarpadian Empires, Vol. VII",
-
-    // These create one exsisting token and one not-exsisting token
-    "Evil Comes to Fruition",
-    "Finale of Glory",
-    "One Dozen Eyes"
   ];
 
   constructor( private $http: HttpClient, private datePipe: DatePipe ) { }
@@ -381,7 +379,7 @@ export class TokenComponent implements OnInit {
       if (
         !cardTextLowerCase.includes( 'would create' )
         && !( cardTextLowerCase.includes( 'would be created' ) )
-        && !this.oldCardsThatDontMakeTokensNames.includes( card.name )
+        && !this.ignore.includes( card.name )
 
       )
         this.orphanedCards.push( card );
@@ -459,10 +457,10 @@ export class TokenComponent implements OnInit {
           (cardText.match( regexForItAndTheyGain ) ? cardText.match( regexForItAndTheyGain ) : []);
 
 
-      if ( this.problemCards.includes( cardname ) ) {
-        console.log( cardText )
-        cardTextTokenKeywordsSubstring.length > 0 ? console.log( cardTextTokenKeywordsSubstring ) : []
-      }
+      // if ( this.problemCards.includes( cardname ) ) {
+      //   console.log( cardText )
+      //   cardTextTokenKeywordsSubstring.length > 0 ? console.log( cardTextTokenKeywordsSubstring ) : []
+      // }
 
       const cardTokenTextGranter = cardText.match( /\".*\"/g ) ? cardText.match( /\".*\"/g ) : [];
       const cardTextRelevantBits = cardTokenTextGranter.concat( cardTextTokenKeywordsSubstring );
