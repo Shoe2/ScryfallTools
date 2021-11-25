@@ -105,16 +105,12 @@ export class TokenComponent implements OnInit {
 
   // TODO: Fix These
   problemCards = [
-    "Blight Mound",
-    "Combat Calligrapher",
     "Dance with Devils",
-    "Dovescape",
-    "Elenda, the Dusk Rose",
     "Make Mischief",
-    "Pest Infestation",
     "Rapacious One",
+    // A HUGE PROBLEM ALL IT'S OWN
     "Sarpadian Empires, Vol. VII",
-    "Zurzoth, Chaos Rider",
+
     // These create one exsisting token and one not-exsisting token
     "Evil Comes to Fruition",
     "Finale of Glory",
@@ -282,11 +278,6 @@ export class TokenComponent implements OnInit {
                   && this.compareColorsByArray( token.colors, tokenData.Colors )
               );
 
-              if ( card.name === "Mascot Exhibition" ) {
-                console.log( token )
-                console.log( tempTokens )
-              }
-
               tempTokens.length === 1 ? tempTokens[ 0 ].CreatedBy.push( card ) : [];
             } );
           }
@@ -363,27 +354,18 @@ export class TokenComponent implements OnInit {
         copyToken.CreatedBy.push( card );
     }
 
+    if ( this.problemCards.includes( card.name ) ) {
+      this.tokens.filter( token => this.processTokenText( allFacesText, token.Text.replace( /\s?\(.*\)/g, '' ), card.name ) );
 
+    }
 
     let tempToken = this.tokens.filter( token =>
       allFacesText.includes( token.Name )
-      && this.processTokenText( allFacesText, token.Text.replace( /\s?\(.*\)/g, '' ) )
+      && this.processTokenText( allFacesText, token.Text.replace( /\s?\(.*\)/g, '' ), token.Name )
       && this.processPowerAndToughness( allFacesText, token )
       && this.processTypeLine( token.TypeLine, allFacesText )
       && this.compareColors( allFacesText, token.Colors )
     );
-
-    if ( card.name === "Godsire" ) {
-      // HACK because Godsire has not been updated in oracle to match every other token generator EVER
-      tempToken = this.tokens.filter(
-        token => token.Name === "Beast"
-          && token.Power === "8"
-          && token.Toughness === "8"
-          && token.Colors.includes( ScryfallColor.G )
-          && token.Colors.includes( ScryfallColor.W )
-          && token.Colors.includes( ScryfallColor.R )
-      )
-    }
 
     if ( tempToken && tempToken.length ) {
       createsNothing = false;
@@ -456,9 +438,11 @@ export class TokenComponent implements OnInit {
     }
   }
 
-  processTokenText( cardText: string, tokenText: string ) {
+  processTokenText( cardText: string, tokenText: string, cardname: string ) {
 
+    //REMOVE REMINDER TEXT
     tokenText = tokenText.replace( /\s?\(.*\)/g, '' );
+    cardText = cardText.replace( /\s?\(.*\)/g, '' );
 
     if ( tokenText === "creature is all colors." && cardText.includes( "all colors" ) ) {
       return true;
@@ -466,10 +450,23 @@ export class TokenComponent implements OnInit {
 
     if ( tokenText && tokenText.length > 0 ) {
       cardText = cardText.toLocaleLowerCase();
-      const cardTextTokenKeywordsSubstring =
-        cardText.match( /with [\w|\s|\d|/|’|,]*\./g ) ? cardText.match( /with [\w|\s|\d|/|’|,]*\./g ) : [];
-      const cardTokenTextGranter = cardText.match( /\“.*\”/g ) ? cardText.match( /\“.*\”/g ) : [];
+      const regexForTokenTextInCardText = /with [\w|\s|\d|/|"|'|,|\{|\}|\:]*\./g;      
+      const regexForItAndTheyGain = /" [\w|\s|\d|/|"|'|,|\{|\}|\:]*\./g;
+
+      let cardTextTokenKeywordsSubstring =
+        cardText.match( regexForTokenTextInCardText ) ? 
+        cardText.match( regexForTokenTextInCardText ) : 
+          (cardText.match( regexForItAndTheyGain ) ? cardText.match( regexForItAndTheyGain ) : []);
+
+
+      if ( this.problemCards.includes( cardname ) ) {
+        console.log( cardText )
+        cardTextTokenKeywordsSubstring.length > 0 ? console.log( cardTextTokenKeywordsSubstring ) : []
+      }
+
+      const cardTokenTextGranter = cardText.match( /\".*\"/g ) ? cardText.match( /\".*\"/g ) : [];
       const cardTextRelevantBits = cardTokenTextGranter.concat( cardTextTokenKeywordsSubstring );
+
 
 
       tokenText = tokenText.toLocaleLowerCase();
