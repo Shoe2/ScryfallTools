@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ScryfallCard } from 'scryfall-ts/build/ScryfallCard';
 import { ScryfallColor } from 'scryfall-ts/build/ScryfallColor';
@@ -8,7 +9,7 @@ import { Token } from '../types/token';
 })
 export class TokenService {
 
-  constructor() { }
+  constructor(private $http: HttpClient) { }
 
   dedupeTokens(tokens: Token[]) {
     const uniqueTokens: Token[] = [];
@@ -40,6 +41,10 @@ export class TokenService {
     } )
 
    return uniqueTokens;
+  }
+
+  getCardByUri( url: string ) {
+    return this.$http.get( url );
   }
 
 }

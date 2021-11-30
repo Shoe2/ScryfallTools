@@ -36,7 +36,7 @@ export class TokenComponent implements OnInit {
 
   problemCards = problemCards;
 
-  constructor( private $http: HttpClient, private datePipe: DatePipe,  private tokenService: TokenService) { }
+  constructor( private $http: HttpClient, private datePipe: DatePipe, private tokenService: TokenService ) { }
 
   ngOnInit(): void {
     this.getNextPageOfCards( environment.prefix + "/search?q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
@@ -81,11 +81,12 @@ export class TokenComponent implements OnInit {
             ( <ScryfallCard[]>response.data ).forEach( ( token: ScryfallCard, index: number ) => {
               if ( token.card_faces && token.card_faces.length > 1 ) {
                 token.card_faces.forEach( ( face: ScryfallCardFace ) => {
-                  if ( 
-                    face.name != "Horror" 
+
+                  if (
+                    face.name != "Horror"
                     && !( face.name === 'Mowu' && !face.colors.length )
-                    &&  !(face.name === "Zombie" && !face.colors.length)
-                    ) {
+                    && !( face.name === "Zombie" && !face.colors.length )
+                  ) {
                     //Hack to remove BU horror token and Mowu face that are falsly colorless in scryfall data
                     const tokenData = new Token(
                       face.power,
@@ -103,7 +104,23 @@ export class TokenComponent implements OnInit {
 
               }
               else {
-                this.tokens.push( new Token( token.power, token.toughness, token.colors, token.name, token.type_line, token.oracle_text, token.image_uris ) );
+                if ( token.name.includes( "Vizier of Many Faces" ) ) {
+                  const cardUri = token.all_parts.filter( part => part.component === "combo_piece" )[ 0 ].uri;
+                  this.tokenService.getCardByUri( cardUri ).subscribe( ( card: ScryfallCard ) => {
+
+                    this.tokens.filter(tokenInstance => tokenInstance.Name === "Vizier of Many Faces")[0].CreatedBy.push( card );
+                  } );
+                }
+                  this.tokens.push(
+                    new Token(
+                      token.power,
+                      token.toughness,
+                      token.colors,
+                      token.name,
+                      token.type_line,
+                      token.oracle_text,
+                      token.image_uris
+                    ) );
               }
 
 
@@ -136,7 +153,7 @@ export class TokenComponent implements OnInit {
   }
 
   dedupeTokens() {
-    this.tokens = this.tokenService.dedupeTokens(this.tokens)
+    this.tokens = this.tokenService.dedupeTokens( this.tokens )
   }
 
   associateCardsWithTokens() {
@@ -151,10 +168,9 @@ export class TokenComponent implements OnInit {
   }
 
   tokensThisCardMakes( card: ScryfallCard ) {
-    if( this.ignore.includes( card.name ) || this.problemCards.includes(card.name)){
+    if ( this.ignore.includes( card.name ) || this.problemCards.includes( card.name ) ) {
       return;
     }
-    
     if ( card.all_parts && card.all_parts ) {
       card.all_parts.forEach( ( relatedCard ) => {
         if ( relatedCard.component === "token" ) {
@@ -166,12 +182,12 @@ export class TokenComponent implements OnInit {
             if ( !tempTokens[ 0 ].CreatedBy.includes( card ) )
               tempTokens[ 0 ].CreatedBy.push( card );
           }
-          else if ( relatedCard.type_line.includes( 'Token' ) && card.name != 'Valkyrie Harbinger' && card.name != 'Rampage of the Valkyries') {
-            this.getCardById( relatedCard.uri ).subscribe( ( token: ScryfallCard ) => {
+          else if ( relatedCard.type_line.includes( 'Token' ) && card.name != 'Valkyrie Harbinger' && card.name != 'Rampage of the Valkyries' ) {
+            this.tokenService.getCardByUri( relatedCard.uri ).subscribe( ( token: ScryfallCard ) => {
               let tempTokens = this.tokens.filter(
                 tokenData => tokenData.Name === token.name
                   && tokenData.TypeLine === token.type_line
-                  && tokenData.Text === token.oracle_text
+                  && tokenData.Text === token.oracle_text.split( ' (' )[ 0 ]
                   && tokenData.Power === token.power
                   && tokenData.Toughness === token.toughness
                   && this.compareColorsByArray( token.colors, tokenData.Colors )
@@ -188,10 +204,6 @@ export class TokenComponent implements OnInit {
     } else {
       this.findTokensMadeByCardOracleText( card );
     }
-  }
-
-  getCardById( url: string ) {
-    return this.$http.get( url );
   }
 
   findTokensMadeByCardOracleText( card: ScryfallCard ) {
@@ -301,15 +313,15 @@ export class TokenComponent implements OnInit {
     }
 
     for ( let type of types ) {
-      if(cardOracleText.includes("Bird enchantment")){
-        console.log(type)
-      }
-      if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() + " ")) {
+      // if(cardOracleText.includes("Bird enchantment")){
+      //   console.log(type)
+      // }
+      if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() + " " ) ) {
         cardDoesMakeTokenWithTypes = false;
         return cardDoesMakeTokenWithTypes;
       }
     };
-    if(cardOracleText.includes("enchantment creature") && !types.includes('Enchantment')){
+    if ( cardOracleText.includes( "enchantment creature" ) && !types.includes( 'Enchantment' ) ) {
       cardDoesMakeTokenWithTypes = false;
     }
     return cardDoesMakeTokenWithTypes;
@@ -352,21 +364,25 @@ export class TokenComponent implements OnInit {
       return true;
     }
 
+    if ( cardText.match( /tokens? with/g ) && !cardText.includes( 'with haste' ) && !tokenText ) {
+      return false;
+    }
+
     if ( tokenText && tokenText.length > 0 ) {
       cardText = cardText.toLocaleLowerCase();
-      const regexForTokenTextInCardText = /with [\w|\s|\d|/|"|'|,|\{|\}|\:]*\./g;      
+      const regexForTokenTextInCardText = /with [\w|\s|\d|/|"|'|,|\{|\}|\:]*\./g;
       const regexForItAndTheyGain = /" [\w|\s|\d|/|"|'|,|\{|\}|\:]*\./g;
 
       let cardTextTokenKeywordsSubstring =
-        cardText.match( regexForTokenTextInCardText ) ? 
-        cardText.match( regexForTokenTextInCardText ) : 
-          (cardText.match( regexForItAndTheyGain ) ? cardText.match( regexForItAndTheyGain ) : []);
+        cardText.match( regexForTokenTextInCardText ) ?
+          cardText.match( regexForTokenTextInCardText ) :
+          ( cardText.match( regexForItAndTheyGain ) ? cardText.match( regexForItAndTheyGain ) : [] );
 
 
-      // if ( this.problemCards.includes( cardname ) ) {
-      //   console.log( cardText )
-      //   cardTextTokenKeywordsSubstring.length > 0 ? console.log( cardTextTokenKeywordsSubstring ) : []
-      // }
+      if ( cardname === "Hedron Fields of Agadeem" ) {
+        console.log( cardText )
+        cardTextTokenKeywordsSubstring.length > 0 ? console.log( cardTextTokenKeywordsSubstring ) : []
+      }
 
       const cardTokenTextGranter = cardText.match( /\".*\"/g ) ? cardText.match( /\".*\"/g ) : [];
       const cardTextRelevantBits = cardTokenTextGranter.concat( cardTextTokenKeywordsSubstring );
