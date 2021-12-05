@@ -1,12 +1,12 @@
 export const problemCards = 
 // TODO: Fix These
  [
-  // A HUGE PROBLEM ALL IT'S OWN
-  "Sarpadian Empires, Vol. VII",
 
   // These create one exsisting token and one not-exsisting token
   "Evil Comes to Fruition",
   "One Dozen Eyes",
+  // A HUGE PROBLEM ALL IT'S OWN, but also makes exsisting and non-exsisting tokens
+  "Sarpadian Empires, Vol. VII",
 
   //OLD and make no exsisting token
   "Abian, Luvion Usurper",
