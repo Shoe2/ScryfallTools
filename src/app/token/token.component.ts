@@ -488,4 +488,13 @@ export class TokenComponent implements OnInit {
 
     return false;
   }
+
+  isGoldDragon(token: Token): boolean {
+    let cardsNamedSODND: ScryfallCard[];
+    if(token.CreatedBy)
+    {
+      cardsNamedSODND = token.CreatedBy.filter(createdBy => createdBy.name ==='Sword of Dungeons & Dragons');
+    }
+    return  cardsNamedSODND.length > 0;
+  }
 }

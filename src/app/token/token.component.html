@@ -22,7 +22,12 @@
         <!-- <td scope="col"><input type="number" [(ngModel)]="token.Owned"/></td>
         <td scope="col"><input type="number" [(ngModel)]="token.Wanted"/></td> -->
         <td scope="col"><span *ngIf="token.Power && token.Toughness">{{token.Power}}/{{token.Toughness}}</span></td>
-        <td scope="col"><span *ngFor="let color of token.Colors" class="symbol color-{{color}}">{{color}}</span></td>
+        <td scope="col">
+          <span *ngFor="let color of token.Colors" class="symbol color-{{color}}">{{color}}</span>          
+          <span *ngIf="token.Name === 'Giant Teddy Bear'" class="symbol color-pink">P</span>
+          <span *ngIf="isGoldDragon(token)" class="symbol color-gold">G</span>
+
+        </td>
         <td scope="col">{{token.Name}}</td>
         <td scope="col">{{token.TypeLine | slice: 5 : token.TypeLine.length}}</td>
         <td scope="col">{{token.Text}}</td>

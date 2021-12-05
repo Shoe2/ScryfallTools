@@ -48,3 +48,13 @@
     color: black;
     padding: 2px 4px;
 }
+.color-pink {
+    background-color: palevioletred;
+    color: white;
+    padding: 2px 8px;
+}
+.color-gold {
+    background-color: goldenrod;
+    color: white;
+    padding: 2px 8px;
+}
