@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ScryfallCard } from 'scryfall-ts/build/ScryfallCard';
-import { ScryfallColor } from 'scryfall-ts/build/ScryfallColor';
 import { Token } from '../types/token';
 
 @Injectable({
