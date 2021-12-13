@@ -84,8 +84,10 @@ export class TokenComponent implements OnInit {
 
                   if (
                     face.name != "Horror"
+                    && !(face.name === "Elemental" && face.illustration_id === "37071500-1a8d-4298-9202-1931cd2bb073")
                     && !( face.name === 'Mowu' && !face.colors.length )
                     && !( face.name === "Zombie" && !face.colors.length )
+                    && !(face.name ==="Wolf" && face.colors.includes(ScryfallColor.W))
                   ) {
                     //Hack to remove BU horror token and Mowu face that are falsly colorless in scryfall data
                     const tokenData = new Token(
@@ -313,9 +315,6 @@ export class TokenComponent implements OnInit {
     }
 
     for ( let type of types ) {
-      // if(cardOracleText.includes("Bird enchantment")){
-      //   console.log(type)
-      // }
       if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() + " " ) ) {
         cardDoesMakeTokenWithTypes = false;
         return cardDoesMakeTokenWithTypes;
@@ -409,8 +408,6 @@ export class TokenComponent implements OnInit {
           return false;
         }
       }
-
-
 
       return true;
 
