@@ -29,6 +29,7 @@ export const problemCards =
   "Evil Boros Charm",
   // For now this makes 4/4 beasts, but eventually should make Phyrexian Beast tokens
   "Ezuri's Predation",
+  "Firecat Blitz",
   "Generated Horizons",
   "Gemini Engine",
   "Giant Caterpillar",

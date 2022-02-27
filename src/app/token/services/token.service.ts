@@ -18,6 +18,10 @@ export class TokenService {
         isDupe = true;
       }
 
+      if(token.TypeLine === "Card"){
+        isDupe = true;
+      }
+
       if ( token.Text ) {
         token.Text = token.Text.replace( /\s?\(.*\)/g, '' );
       }

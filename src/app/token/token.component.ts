@@ -26,14 +26,6 @@ export class TokenComponent implements OnInit {
   loading = this.loadingSource.asObservable();
   isLoading = true;
 
-  // IGNORE, these aren't really cards
-  ignore = [
-    "Winchester Draft // Winchester Draft (cont'd)",
-    "Totally Lost in Translation // Totally Lost in Translation (cont'd)",
-    "Energy Reserve",
-    "City's Blessing",
-  ];
-
   problemCards = problemCards;
 
   constructor( private $http: HttpClient, private datePipe: DatePipe, private tokenService: TokenService ) { }
@@ -84,10 +76,10 @@ export class TokenComponent implements OnInit {
 
                   if (
                     face.name != "Horror"
-                    && !(face.name === "Elemental" && face.illustration_id === "37071500-1a8d-4298-9202-1931cd2bb073")
+                    && !( face.name === "Elemental" && face.illustration_id === "37071500-1a8d-4298-9202-1931cd2bb073" )
                     && !( face.name === 'Mowu' && !face.colors.length )
                     && !( face.name === "Zombie" && !face.colors.length )
-                    && !(face.name ==="Wolf" && face.colors.includes(ScryfallColor.W))
+                    && !( face.name === "Wolf" && face.colors.includes( ScryfallColor.W ) )
                   ) {
                     //Hack to remove BU horror token and Mowu face that are falsly colorless in scryfall data
                     const tokenData = new Token(
@@ -110,19 +102,19 @@ export class TokenComponent implements OnInit {
                   const cardUri = token.all_parts.filter( part => part.component === "combo_piece" )[ 0 ].uri;
                   this.tokenService.getCardByUri( cardUri ).subscribe( ( card: ScryfallCard ) => {
 
-                    this.tokens.filter(tokenInstance => tokenInstance.Name === "Vizier of Many Faces")[0].CreatedBy.push( card );
+                    this.tokens.filter( tokenInstance => tokenInstance.Name === "Vizier of Many Faces" )[ 0 ].CreatedBy.push( card );
                   } );
                 }
-                  this.tokens.push(
-                    new Token(
-                      token.power,
-                      token.toughness,
-                      token.colors,
-                      token.name,
-                      token.type_line,
-                      token.oracle_text,
-                      token.image_uris
-                    ) );
+                this.tokens.push(
+                  new Token(
+                    token.power,
+                    token.toughness,
+                    token.colors,
+                    token.name,
+                    token.type_line,
+                    token.oracle_text,
+                    token.image_uris
+                  ) );
               }
 
 
@@ -163,14 +155,18 @@ export class TokenComponent implements OnInit {
     this.cardsThatMakeTokens.forEach( ( card: ScryfallCard, index: number ) => {
       this.tokensThisCardMakes( card );
       if ( index === this.cardsThatMakeTokens.length - 1 ) {
+        const germToken = this.tokens.find( token => token.Name === "Germ" );
+        const phyrexianGermToken = this.tokens.find( token => token.Name === "Phyrexian Germ" )
+        phyrexianGermToken.CreatedBy = phyrexianGermToken.CreatedBy.concat( germToken.CreatedBy );
+        this.tokens = this.tokens.filter( token => token.Name !== "Germ" );
+
         this.isLoading = false;
       }
     } );
-
   }
 
   tokensThisCardMakes( card: ScryfallCard ) {
-    if ( this.ignore.includes( card.name ) || this.problemCards.includes( card.name ) ) {
+    if ( this.problemCards.includes( card.name ) ) {
       return;
     }
     if ( card.all_parts && card.all_parts ) {
@@ -288,7 +284,7 @@ export class TokenComponent implements OnInit {
       }
     }
 
-    else if ( createsNothing ) {
+    else if ( createsNothing && !card.type_line.includes( "Card" ) ) {
       // CREATE TOKEN or IGNORE ME
       const cardTextLowerCase = allFacesText.toLocaleLowerCase();
       if (
@@ -298,14 +294,10 @@ export class TokenComponent implements OnInit {
         this.orphanedCards.push( card );
     }
 
-
     tempToken = null;
-
   }
 
   processTypeLine( typeLine: string, cardOracleText: string ): boolean {
-
-
     let cardDoesMakeTokenWithTypes = true;
     let types = typeLine.split( ' ' );
     types = types.filter( text => text != '—' && text != 'Token' );
@@ -314,15 +306,40 @@ export class TokenComponent implements OnInit {
       return false;
     }
 
+    let typeReverseSearchString = "";
+
+    let subtypeReverseSearchString = "";
+
     for ( let type of types ) {
-      if ( !cardOracleText.toLocaleLowerCase().includes( type.toLocaleLowerCase() + " " ) ) {
-        cardDoesMakeTokenWithTypes = false;
-        return cardDoesMakeTokenWithTypes;
+      if ( type === "Legendary" ) {
+        //do nothing
+      }
+
+      else if ( type === "Snow" ) {
+        typeReverseSearchString += " snow";
+      }
+
+      else if ( type === "Enchantment" ) {
+        typeReverseSearchString += " enchantment";
+      }
+
+      else if ( type === "Artifact" ) {
+        typeReverseSearchString += " artifact";
+      }
+
+      else if ( type === "Creature" ) {
+        typeReverseSearchString += " creature";
+      }
+      else {
+        subtypeReverseSearchString += ( " " + type.toLocaleLowerCase() );
       }
     };
-    if ( cardOracleText.includes( "enchantment creature" ) && !types.includes( 'Enchantment' ) ) {
+    typeReverseSearchString += " token"
+
+    if ( !cardOracleText.toLocaleLowerCase().includes( subtypeReverseSearchString + typeReverseSearchString ) ) {
       cardDoesMakeTokenWithTypes = false;
     }
+
     return cardDoesMakeTokenWithTypes;
   }
 
@@ -486,12 +503,11 @@ export class TokenComponent implements OnInit {
     return false;
   }
 
-  isGoldDragon(token: Token): boolean {
+  isGoldDragon( token: Token ): boolean {
     let cardsNamedSODND: ScryfallCard[];
-    if(token.CreatedBy)
-    {
-      cardsNamedSODND = token.CreatedBy.filter(createdBy => createdBy.name ==='Sword of Dungeons & Dragons');
+    if ( token.CreatedBy ) {
+      cardsNamedSODND = token.CreatedBy.filter( createdBy => createdBy.name === 'Sword of Dungeons & Dragons' );
     }
-    return  cardsNamedSODND.length > 0;
+    return cardsNamedSODND.length > 0;
   }
 }
