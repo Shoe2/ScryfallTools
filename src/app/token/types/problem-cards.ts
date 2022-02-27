@@ -54,7 +54,6 @@ export const problemCards =
   "Monkey Cage",
   "Nuisance Engine",
   "Ovinomancer",
-  "Oyobi, Who Split the Heavens",
   "Penumbra Bobcat",
   "Penumbra Kavu",
   "Phantasmal Sphere",
