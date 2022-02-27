@@ -268,6 +268,17 @@ export class TokenComponent implements OnInit {
 
     }
 
+    // if(card.name === "Smoke Spirits' Aid"){
+    //   const smokeBlessing = this.tokens.filter(token => token.Name ==="Smoke Blessing")[0];
+
+    //   console.log(allFacesText.includes( smokeBlessing.Name ));
+    //   console.log(this.processTokenText( allFacesText, smokeBlessing.Text.replace( /\s?\(.*\)/g, '' ), smokeBlessing.Name ))
+    //   console.log( this.processPowerAndToughness( allFacesText, smokeBlessing ))
+    //     console.log(this.processTypeLine( smokeBlessing.TypeLine, allFacesText ))
+         
+    //      console.log(this.compareColors( allFacesText, smokeBlessing.Colors )
+    // }
+
     let tempToken = this.tokens.filter( token =>
       allFacesText.includes( token.Name )
       && this.processTokenText( allFacesText, token.Text.replace( /\s?\(.*\)/g, '' ), token.Name )
@@ -298,6 +309,7 @@ export class TokenComponent implements OnInit {
   }
 
   processTypeLine( typeLine: string, cardOracleText: string ): boolean {
+
     let cardDoesMakeTokenWithTypes = true;
     let types = typeLine.split( ' ' );
     types = types.filter( text => text != '—' && text != 'Token' );
@@ -344,6 +356,13 @@ export class TokenComponent implements OnInit {
   }
 
   processPowerAndToughness( cardOracleText: string, token: Token ) {
+    if(!token.Power && !cardOracleText.includes("reature token")) {
+      return true;
+    }
+
+    if(!token.Power && cardOracleText.includes("reature token")) {
+      return false;
+    }
 
     if ( token.Power === '*' || token.Toughness === '*' ) {
       //NOT WORKING COMPLETELY
