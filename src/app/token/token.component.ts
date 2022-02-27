@@ -344,11 +344,11 @@ export class TokenComponent implements OnInit {
   }
 
   processPowerAndToughness( cardOracleText: string, token: Token ) {
-    if(!token.Power && !cardOracleText.includes("reature token")) {
+    if ( !token.Power && !cardOracleText.includes( "reature token" ) ) {
       return true;
     }
 
-    if(!token.Power && cardOracleText.includes("reature token")) {
+    if ( !token.Power && cardOracleText.includes( "reature token" ) ) {
       return false;
     }
 
@@ -377,6 +377,15 @@ export class TokenComponent implements OnInit {
   }
 
   processTokenText( cardText: string, tokenText: string, cardname: string ) {
+    if ( cardText.includes( "It has" ) ) {
+      const cardGives = cardText.split( '"' )[ 1 ];
+      if ( tokenText === cardGives ) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
 
     //REMOVE REMINDER TEXT
     tokenText = tokenText.replace( /\s?\(.*\)/g, '' );
@@ -400,16 +409,8 @@ export class TokenComponent implements OnInit {
           cardText.match( regexForTokenTextInCardText ) :
           ( cardText.match( regexForItAndTheyGain ) ? cardText.match( regexForItAndTheyGain ) : [] );
 
-
-      if ( cardname === "Hedron Fields of Agadeem" ) {
-        console.log( cardText )
-        cardTextTokenKeywordsSubstring.length > 0 ? console.log( cardTextTokenKeywordsSubstring ) : []
-      }
-
       const cardTokenTextGranter = cardText.match( /\".*\"/g ) ? cardText.match( /\".*\"/g ) : [];
       const cardTextRelevantBits = cardTokenTextGranter.concat( cardTextTokenKeywordsSubstring );
-
-
 
       tokenText = tokenText.toLocaleLowerCase();
       let linesOfTextToken = tokenText.split( '\n' );
