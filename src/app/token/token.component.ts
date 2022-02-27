@@ -32,7 +32,6 @@ export class TokenComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNextPageOfCards( environment.prefix + "/search?q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
-    // +-is%3Apromo no longer removing promos? is this ok?
     this.getNextPageOfCards(
       environment.prefix +
       `/search?q=fo%3Acreate+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+date<%3D${ this.makeDateStringForTomorrow() }+&unique=cards`
@@ -268,17 +267,6 @@ export class TokenComponent implements OnInit {
 
     }
 
-    // if(card.name === "Smoke Spirits' Aid"){
-    //   const smokeBlessing = this.tokens.filter(token => token.Name ==="Smoke Blessing")[0];
-
-    //   console.log(allFacesText.includes( smokeBlessing.Name ));
-    //   console.log(this.processTokenText( allFacesText, smokeBlessing.Text.replace( /\s?\(.*\)/g, '' ), smokeBlessing.Name ))
-    //   console.log( this.processPowerAndToughness( allFacesText, smokeBlessing ))
-    //     console.log(this.processTypeLine( smokeBlessing.TypeLine, allFacesText ))
-         
-    //      console.log(this.compareColors( allFacesText, smokeBlessing.Colors )
-    // }
-
     let tempToken = this.tokens.filter( token =>
       allFacesText.includes( token.Name )
       && this.processTokenText( allFacesText, token.Text.replace( /\s?\(.*\)/g, '' ), token.Name )
@@ -365,7 +353,6 @@ export class TokenComponent implements OnInit {
     }
 
     if ( token.Power === '*' || token.Toughness === '*' ) {
-      //NOT WORKING COMPLETELY
       let powerMatches = false;
       let toughnessMatches = false;
 
@@ -457,16 +444,9 @@ export class TokenComponent implements OnInit {
     if ( tokenColors.length === 5 && cardText.toLocaleLowerCase().includes( "all colors" ) ) {
       return true;
     }
-    const isCardImFuckingWith = cardText.toLocaleLowerCase().includes( 'hoose four.' );
-    //const choppedOnCreateText = cardText.toLocaleLowerCase().split( 'create' );
     let choppedOnCreateText = cardText.match( /(c|C)reate(s?) [\w|\s|\d|/|’|,]*token/g );
-    // /(c|C)reate(s?) [\w|\s|\d|/|’|,]*[(with)|\.]/g
     !choppedOnCreateText ? choppedOnCreateText = [ cardText ] : [];
-    //isCardImFuckingWith ? console.log( choppedOnCreateText.length ) : []
-    //const tokenCreationText = choppedOnCreateText.length > 2 ? choppedOnCreateText.slice( 1 ).join( ' ' ) : choppedOnCreateText[ choppedOnCreateText.length - 1 ];
     cardText.includes( "hoose four." ) ? console.log( choppedOnCreateText ) : [];
-    //TODO: Broken for cards that say create twice
-    // cardText.includes("all colors") ? console.log(cardText)
     for ( const tokenCreationText of choppedOnCreateText ) {
       if ( tokenColors.length === 0 && tokenCreationText.toLocaleLowerCase().includes( "colorless" ) ) {
         return true;
