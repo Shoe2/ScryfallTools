@@ -117,7 +117,7 @@ export class TokenComponent implements OnInit {
               }
 
 
-              if ( index === response.data.length - 1 ) {
+              if ( index === (response.data as ScryfallCard[]).length - 1 ) {
                 this.loadingSource.next( this.loadingSource.value + 1 );
                 this.tokens.sort( ( a, b ) => {
                   if ( a.Name < b.Name ) {

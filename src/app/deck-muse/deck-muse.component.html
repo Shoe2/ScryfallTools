@@ -1,0 +1,11 @@
+Random Deck Theme Generator
+<button (click)="generateDeckIdea()">Generate</button>
+
+
+<div *ngIf="ideas.length > 0">
+<h4>Deck Idea:</h4>
+<div>make a {{ideas[0]}} and {{ideas[1]}} deck</div>
+<div> that is</div>
+<div *ngFor="let color of colorsForIdea">{{color}}</div>
+
+</div>
