@@ -21,7 +21,7 @@ export class TribalComponent implements OnInit {
     this.creatureTypeData = [];  
     (response.data as string[]).forEach((tribe: string, i: number)=>{
       this.creatureTypeData.push(new TribalData(tribe));
-      if(i === response.data.length -1){
+      if(i === (response.data as string[]).length -1){
         this.computeTribalStats();
       }
       });
