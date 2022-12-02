@@ -17,8 +17,8 @@
     <tbody>
       <tr *ngFor="let tribe of creatureTypeData">
         <th scope="col">{{tribe.creatureType}}</th>
-        <td scope="col"><a target="_blank" href="https://scryfall.com/search?q=t%3A{{tribe.creatureType}}&unique=cards&as=grid&order=name">{{tribe.cardsWithType}}</a></td>
-        <td scope="col"><a target="_blank" href="https://scryfall.com/search?q=+t%3A{{tribe.creatureType}}+is%3Acommander+format%3Acommander&unique=cards&as=grid&order=name">{{tribe.commandersWithType}}</a></td>
+        <td scope="col"><a target="_blank" href="https://scryfall.com/search?q=t%3A{{tribe.creatureType}}+game%3Apaper&unique=cards&as=grid&order=name">{{tribe.cardsWithType}}</a></td>
+        <td scope="col"><a target="_blank" href="https://scryfall.com/search?q=+t%3A{{tribe.creatureType}}+is%3Acommander+format%3Acommander+game%3Apaper&unique=cards&as=grid&order=name">{{tribe.commandersWithType}}</a></td>
         <td scope="col"><a>{{tribe.makesTokensOfType}}</a></td>
         <td scope="col"><a>{{tribe.turnsIntoCreatureOfType}}</a></td>
         <td scope="col"><a>{{tribe.hozesType}}</a></td>
