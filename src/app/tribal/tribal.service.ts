@@ -83,6 +83,11 @@ export class TribalService {
         // tribe.silverBorderedCardsWithType = tribeDataResponses[6].total_cards;
         // tribe.silverBorderedCommanders = tribeDataResponses[7].total_cards;
     this.tribeDataSource.value.push(tribeData);
+    this.tribeDataSource.value.sort((a, b) => {
+        var textA = a.creatureType.toUpperCase();
+        var textB = b.creatureType.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
   }
 
 }
