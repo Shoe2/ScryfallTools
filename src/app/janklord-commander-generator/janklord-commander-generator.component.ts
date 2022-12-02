@@ -18,13 +18,13 @@ export class JanklordCommanderGeneratorComponent implements OnInit {
 
   newCommander() {
     const url = 'https://api.scryfall.com/cards/random?q=%20is%3Acommander+usd%3C%3D0.79+format%3Acommander';
-    this.$http.get( url ).subscribe( ( response: ScryfallAPIResponse ) => {
-      this.selectedCommander = response.data as ScryfallCard;
+    this.$http.get( url ).subscribe( ( response: ScryfallCard ) => {
+      this.selectedCommander = response;
 
-      if ( this.selectedCommander.keywords.includes( 'Partner' ) ) {
+      if ( this.selectedCommander.keywords && this.selectedCommander.keywords.length && this.selectedCommander.keywords.includes( 'Partner' ) ) {
         const url = 'https://api.scryfall.com/cards/random?q=%20is%3Acommander+usd%3C%3D0.79+format%3Acommander+keyword%3Apartner+-o%3A"partner+with"';
-        this.$http.get( url ).subscribe( ( response: ScryfallAPIResponse ) => {
-          this.partner = response.data as ScryfallCard;
+        this.$http.get( url ).subscribe( ( response: ScryfallCard ) => {
+          this.partner = response;
 
         } );
       }

@@ -1,10 +1,10 @@
 <h1>Quest for the Janklord Random Commander Generator</h1>
-<button onclick="newCommander()">
+<button (click)="newCommander()">
     <img style="height:200px;width:200px"
         src="https://c1.scryfall.com/file/scryfall-cards/art_crop/front/6/7/67b369c4-faa8-45c8-a1b9-98f228b69682.jpg"/>
 </button>
 <br />
 
 <div id="commanderDisplay">
-    {{selectedCommander}}
+    {{selectedCommander?.name}} and {{partner.name}}
 </div>
