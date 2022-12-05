@@ -35,14 +35,14 @@ export class TribalService {
       const observables: Observable<ScryfallAPIResponse>[] = [];
       //cards
       observables.push(
-        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+game%3Apaper")
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+game%3Apaper+-is%3Afunny")
         .pipe(
             catchError(() => of(this.noCards))
         )
       )
       //commanders
        observables.push(
-        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+is%3Acommander+game%3Apaper")
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+is%3Acommander+game%3Apaper+-is%3Afunny")
         .pipe(
             catchError(() => of(this.noCards))
         )
