@@ -55,14 +55,24 @@ export class TribalService {
     //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
       //lords
     //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
-      //funny lords
-    //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
-      //funny
-    //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType +  "+is%3Afunny"))
+ 
+    //joke cards
+    observables.push(
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+game%3Apaper+is%3Afunny")
+        .pipe(
+            catchError(() => of(this.noCards))
+        )
+      )
+    
       //funny commanders
-    //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType + "+is%3Afunny+is%3Acommander"))
-      //      (o:/\belf\b/ or o:/\belves\b/) o:create
-      
+       observables.push(
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+is%3Acommander+game%3Apaper+is%3Afunny")
+        .pipe(
+            catchError(() => of(this.noCards))
+        )
+        )
+        //funny lords
+    //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe.creatureType))
       forkJoin(observables).subscribe(
         (tribeDataResponses) => this.assignTribeData(tribe, tribeDataResponses), 
       (tribeDataResponses) => this.assignTribeData(tribe, tribeDataResponses)
@@ -79,9 +89,10 @@ export class TribalService {
         // tribe.turnsIntoCreatureOfType = tribeDataResponses[2].total_cards;
         // tribe.hozesType = tribeDataResponses[3].total_cards;
         // tribe.lordsOfType = tribeDataResponses[4].total_cards;
+    tribeData.silverBorderedCardsWithType = tribeDataResponses[2].total_cards;
         // tribe.silverBorderedLords = tribeDataResponses[5].total_cards;
-        // tribe.silverBorderedCardsWithType = tribeDataResponses[6].total_cards;
-        // tribe.silverBorderedCommanders = tribeDataResponses[7].total_cards;
+
+        tribeData.silverBorderedCommanders = tribeDataResponses[3].total_cards;
     this.tribeDataSource.value.push(tribeData);
     this.tribeDataSource.value.sort((a, b) => {
         var textA = a.creatureType.toUpperCase();

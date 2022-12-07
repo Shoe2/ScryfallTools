@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table table-striped table-bordered">
     <thead>
       <tr>
         <th scope="col">Creature Type</th>
@@ -17,14 +17,31 @@
     <tbody>
       <tr *ngFor="let tribe of creatureTypeData" [ngClass]="">
         <th scope="col">{{tribe.creatureType}}</th>
-        <td scope="col"><a target="_blank" href="https://scryfall.com/search?q=t%3A{{tribe.creatureType}}+game%3Apaper+-is%3Afunny&unique=cards&as=grid&order=color">{{tribe.cardsWithType}}</a></td>
-        <td scope="col"><a target="_blank" href="https://scryfall.com/search?q=+t%3A{{tribe.creatureType}}+is%3Acommander+format%3Acommander+game%3Apaper+-is%3Afunny&unique=cards&as=grid&order=color">{{tribe.commandersWithType}}</a></td>
+        <td scope="col">
+          <a target="_blank" [href]="cardsWithTypeHref(tribe.creatureType)">
+            {{tribe.cardsWithType}}
+          </a>
+        </td>
+        <td scope="col">
+          <a target="_blank" [href]="commandersWithTypeHref(tribe.creatureType)">
+          {{tribe.commandersWithType}}
+        </a>
+        </td>
         <td scope="col"><a>{{tribe.makesTokensOfType}}</a></td>
         <td scope="col"><a>{{tribe.turnsIntoCreatureOfType}}</a></td>
         <td scope="col"><a>{{tribe.hozesType}}</a></td>
         <td scope="col"><a>{{tribe.lordsOfType}}</a></td>
-        <td scope="col" class="silver"><a>{{tribe.silverBorderedCardsWithType}}</a></td>
-        <td scope="col" class="silver"><a>{{tribe.silverBorderedCommanders}}</a></td>
+        <td scope="col">N/A</td>
+        <td scope="col" class="silver">
+          <a target="_blank" [href]="silverBorderedCardsWithTypeHref(tribe.creatureType)">
+            {{tribe.silverBorderedCardsWithType}}
+          </a>
+        </td>
+        <td scope="col" class="silver">
+          <a target="_blank" [href]="silverBorderedCommandersHref(tribe.creatureType)">
+            {{tribe.silverBorderedCommanders}}
+          </a>
+        </td>
         <td scope="col" class="silver"><a>{{tribe.silverBorderedLords}}</a></td>
       </tr>
     </tbody>

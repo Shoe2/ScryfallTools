@@ -22,4 +22,19 @@ export class TribalComponent implements OnInit {
     this.tribalService.tribeData.subscribe(data => this.creatureTypeData = data);
   }
 
+  cardsWithTypeHref(creatureType: string){
+    return `https://scryfall.com/search?q=t%3A${creatureType}+game%3Apaper+-is%3Afunny&unique=cards&as=grid&order=color`
+  }
+
+  commandersWithTypeHref(creatureType: string){
+    return `https://scryfall.com/search?q=+t%3A${creatureType}+is%3Acommander+format%3Acommander+game%3Apaper+-is%3Afunny&unique=cards&as=grid&order=color`
+  }
+
+  silverBorderedCardsWithTypeHref(creatureType: string){
+    return `https://scryfall.com/search?q=t%3A${creatureType}+game%3Apaper+is%3Afunny&unique=cards&as=grid&order=color`
+  }
+
+  silverBorderedCommandersHref(creatureType: string){
+    return `https://scryfall.com/search?q=+t%3A${creatureType}+is%3Acommander+format%3Acommander+game%3Apaper+is%3Afunny&unique=cards&as=grid&order=color`
+  }
 }
