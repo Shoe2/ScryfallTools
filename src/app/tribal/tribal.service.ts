@@ -35,20 +35,25 @@ export class TribalService {
       const observables: Observable<ScryfallAPIResponse>[] = [];
       //cards
       observables.push(
-        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+game%3Apaper+-is%3Afunny")
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + `/search?q=t%3A${tribe}+game%3Apaper+-is%3Afunny`)
         .pipe(
             catchError(() => of(this.noCards))
         )
       )
       //commanders
        observables.push(
-        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+is%3Acommander+game%3Apaper+-is%3Afunny")
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + `/search?q=t%3A${tribe}+is%3Acommander+game%3Apaper+-is%3Afunny`)
         .pipe(
             catchError(() => of(this.noCards))
         )
         )
       //token makers
-    //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=o%3A%2Fcreate%28s%29%3F+.*" + tribe.creatureType + "+.*creature+token%2F" + "-is%3Afunny"))
+      observables.push(
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + `/search?q=fo%3A%2F%5Cb${tribe}%5Cb%2F+game%3Apaper+-is%3Afunny+fo%3Acreate&unique=cards`)
+        .pipe(
+            catchError(() => of(this.noCards))
+        )
+        )
       //becomes
     //   observables.push(this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=o%3A%2Fbecome%28s%29%3F+.*" + tribe.creatureType + ".%2F" + "-is%3Afunny" ))
       //hozes
@@ -58,7 +63,7 @@ export class TribalService {
  
     //joke cards
     observables.push(
-        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+game%3Apaper+is%3Afunny")
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + `/search?q=t%3A${tribe}+game%3Apaper+is%3Afunny`)
         .pipe(
             catchError(() => of(this.noCards))
         )
@@ -66,7 +71,7 @@ export class TribalService {
     
       //funny commanders
        observables.push(
-        this.$http.get<ScryfallAPIResponse>(environment.prefix + "/search?q=t%3A" + tribe + "+is%3Acommander+game%3Apaper+is%3Afunny")
+        this.$http.get<ScryfallAPIResponse>(environment.prefix + `/search?q=t%3A${tribe}+is%3Acommander+game%3Apaper+is%3Afunny`)
         .pipe(
             catchError(() => of(this.noCards))
         )
@@ -89,10 +94,11 @@ export class TribalService {
         // tribe.turnsIntoCreatureOfType = tribeDataResponses[2].total_cards;
         // tribe.hozesType = tribeDataResponses[3].total_cards;
         // tribe.lordsOfType = tribeDataResponses[4].total_cards;
-    tribeData.silverBorderedCardsWithType = tribeDataResponses[2].total_cards;
+        tribeData.makesTokensOfType = tribeDataResponses[2].total_cards;
+    tribeData.silverBorderedCardsWithType = tribeDataResponses[3].total_cards;
         // tribe.silverBorderedLords = tribeDataResponses[5].total_cards;
 
-        tribeData.silverBorderedCommanders = tribeDataResponses[3].total_cards;
+        tribeData.silverBorderedCommanders = tribeDataResponses[4].total_cards;
     this.tribeDataSource.value.push(tribeData);
     this.tribeDataSource.value.sort((a, b) => {
         var textA = a.creatureType.toUpperCase();

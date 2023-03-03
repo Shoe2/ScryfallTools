@@ -34,7 +34,7 @@ export class TokenComponent implements OnInit {
     this.getNextPageOfCards( environment.prefix + "/search?q=t%3Atoken+-set%3Atbth+-set%3Atdag+-set%3Atfth+-%28set%3Atust+is%3Adfc%29&unique=cards", true, "token" );
     this.getNextPageOfCards(
       environment.prefix +
-      `/search?q=fo%3Acreate+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+date<%3D${ this.makeDateStringForTomorrow() }+&unique=cards`
+      `/search?q=game%3Apaper+fo%3A%2F%5Cbcreate%5Cb%2F+include%3Aextras+-t%3Aemblem+-t%3Atoken+-border%3Agold+date<%3D${ this.makeDateStringForTomorrow() }+&unique=cards`
       , true, "card" );
     this.loading.subscribe( () => {
       if ( this.loadingSource.value > 0 && this.subscriptions.length === this.loadingSource.value ) {
@@ -233,6 +233,12 @@ export class TokenComponent implements OnInit {
       if ( !treasureToken.CreatedBy.includes( card ) )
         treasureToken.CreatedBy.push( card );
     }
+    if ( allFacesText.includes( 'Powerstone' ) ) {
+      createsNothing = false;
+      const powerstoneToken = this.tokens.find( token => token.Name === 'Powerstone' );
+      if ( !powerstoneToken.CreatedBy.includes( card ) )
+      powerstoneToken.CreatedBy.push( card );
+    }
     if ( allFacesText.includes( 'Gold token' ) ) {
       createsNothing = false;
       const goldToken = this.tokens.find( token => token.Name === 'Gold' );
@@ -254,7 +260,9 @@ export class TokenComponent implements OnInit {
     if ( allFacesText.toLocaleLowerCase().includes( 'that\'s a copy' )
       || allFacesText.toLocaleLowerCase().includes( 'that are copies' )
       || allFacesText.toLocaleLowerCase().includes( 'create a copy' )
+      || allFacesText.toLocaleLowerCase().includes( 'create a token copy' )
       || allFacesText.toLocaleLowerCase().includes( 'tokens that are copies' )
+      || allFacesText.toLocaleLowerCase().includes( 'tokens that are each copies' )
     ) {
       createsNothing = false;
       const copyToken = this.tokens.find( token => token.Name === 'Copy' );
@@ -288,7 +296,8 @@ export class TokenComponent implements OnInit {
       const cardTextLowerCase = allFacesText.toLocaleLowerCase();
       if (
         !cardTextLowerCase.includes( 'would create' )
-        && !( cardTextLowerCase.includes( 'would be created' ) )
+        && !( cardTextLowerCase.includes( 'create your deck' ) )
+        && !( cardTextLowerCase.includes( 'whenever you create' ) )
       )
         this.orphanedCards.push( card );
     }
@@ -298,9 +307,13 @@ export class TokenComponent implements OnInit {
 
   processTypeLine( typeLine: string, cardOracleText: string ): boolean {
 
+    // if(cardOracleText.includes('Celestine Cave Witch')  || cardOracleText.includes('five 1/1 white Clown Robot')){
+    //   debugger
+    // }
+
     let cardDoesMakeTokenWithTypes = true;
     let types = typeLine.split( ' ' );
-    types = types.filter( text => text != '—' && text != 'Token' );
+    types = types.filter( text => text != '—' && text != 'Token' && text != 'token' );
 
     if ( !typeLine.includes( "Legendary" ) && cardOracleText.toLocaleLowerCase().includes( ", a legendary" ) ) {
       return false;

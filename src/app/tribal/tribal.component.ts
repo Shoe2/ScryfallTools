@@ -37,4 +37,8 @@ export class TribalComponent implements OnInit {
   silverBorderedCommandersHref(creatureType: string){
     return `https://scryfall.com/search?q=+t%3A${creatureType}+is%3Acommander+format%3Acommander+game%3Apaper+is%3Afunny&unique=cards&as=grid&order=color`
   }
+
+  makesTokensOfTypeHref(creatureType: string) {
+    return `https://scryfall.com/search?q=fo%3A%2F%5Cb${creatureType}%5Cb%2F+game%3Apaper+-is%3Afunny+fo%3Acreate&unique=cards`;
+  }
 }

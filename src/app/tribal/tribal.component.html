@@ -27,7 +27,11 @@
           {{tribe.commandersWithType}}
         </a>
         </td>
-        <td scope="col"><a>{{tribe.makesTokensOfType}}</a></td>
+        <td scope="col">
+          <a target="_blank" [href]="makesTokensOfTypeHref(tribe.creatureType)">
+            {{tribe.makesTokensOfType}}
+          </a>
+        </td>
         <td scope="col"><a>{{tribe.turnsIntoCreatureOfType}}</a></td>
         <td scope="col"><a>{{tribe.hozesType}}</a></td>
         <td scope="col"><a>{{tribe.lordsOfType}}</a></td>
