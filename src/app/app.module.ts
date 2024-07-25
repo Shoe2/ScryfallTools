@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,21 +11,14 @@ import { DatePipe } from '@angular/common';
 import { DeckMuseComponent } from './deck-muse/deck-muse.component';
 import { JanklordCommanderGeneratorComponent } from './janklord-commander-generator/janklord-commander-generator.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    TokenComponent,
-    TribalComponent,
-    HomeComponent,
-    DeckMuseComponent,
-    JanklordCommanderGeneratorComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
-  providers: [DatePipe],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        TokenComponent,
+        TribalComponent,
+        HomeComponent,
+        DeckMuseComponent,
+        JanklordCommanderGeneratorComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule], providers: [DatePipe, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
