@@ -30,6 +30,7 @@ export class TokenService {
         if ( token.Name === uniqueTokens[ i ].Name &&
           token.Power === uniqueTokens[ i ].Power &&
           token.Toughness === uniqueTokens[ i ].Toughness &&
+          token.Colors &&
           token.Colors.toString() === uniqueTokens[ i ].Colors.toString() &&
           token.Text === uniqueTokens[ i ].Text &&
           token.TypeLine === uniqueTokens[ i ].TypeLine
