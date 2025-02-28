@@ -1,0 +1,12 @@
+<h5>Random Creature Type</h5>
+<button (click)="randomCreatureType()">Generate Creature Type</button>
+<div>{{selectedCreatureType}}</div>
+<hr/>
+<h5>Random Keyword</h5>
+<button (click)="randomKeyword()">Generate Random Keyword</button>
+<div>{{selectedKeyword}}</div>
+<hr/>
+
+<h5>Random Color Identity</h5>
+<button (click)="generateRandomColorIdentity()">Generate Color Idenitiy</button>
+<span *ngFor="let color of colorsForIdea" class="symbol color-{{color}}">{{color}}</span>

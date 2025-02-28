@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+.symbol {
+    border-radius: 100%;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+.color-U {
+    background-color: blue;
+    color: white;
+    padding: 2px 8px;
+}
+.color-B,
+.common {
+    background-color: black;
+    color: white;
+    padding: 2px 8px;
+}
+.color-R {
+    background-color: red;
+    color: white;
+    padding: 2px 8px;
+}
+.color-G {
+    background-color: green;
+    color: white;
+    padding: 2px 8px;
+}
+.color-W {
+    background-color: white;
+    color: black;
+    padding: 2px 4px;
+}

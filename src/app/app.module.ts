@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { DatePipe } from '@angular/common';
 import { DeckMuseComponent } from './deck-muse/deck-muse.component';
 import { JanklordCommanderGeneratorComponent } from './janklord-commander-generator/janklord-commander-generator.component';
+import { ArchidektDeckStatsComponent } from './archidekt-deck-stats/archidekt-deck-stats.component';
+import { RandomGeneratorsComponent } from './random-generators/random-generators.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -17,7 +19,9 @@ import { JanklordCommanderGeneratorComponent } from './janklord-commander-genera
         TribalComponent,
         HomeComponent,
         DeckMuseComponent,
-        JanklordCommanderGeneratorComponent
+        RandomGeneratorsComponent,
+        JanklordCommanderGeneratorComponent,
+        ArchidektDeckStatsComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule], providers: [DatePipe, provideHttpClient(withInterceptorsFromDi())] })
