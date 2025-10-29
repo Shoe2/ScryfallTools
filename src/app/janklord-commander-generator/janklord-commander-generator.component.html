@@ -6,8 +6,9 @@
 <br />
 
 <div id="commanderDisplay" *ngIf="selectedCommander">
-    {{selectedCommander?.name}} 
+    {{selectedCommander?.name || ''}} 
 </div>
+<img *ngIf="selectedCommander && selectedCommander.image_uris" [src]="selectedCommander.image_uris.normal">
 <!-- <div id="commanderDisplay" *ngIf="partner">
      and {{partner.name}}
 </div> -->
