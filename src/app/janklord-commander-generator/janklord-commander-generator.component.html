@@ -5,6 +5,9 @@
 </button>
 <br />
 
-<div id="commanderDisplay">
-    {{selectedCommander?.name}} and {{partner.name}}
+<div id="commanderDisplay" *ngIf="selectedCommander">
+    {{selectedCommander?.name}} 
+</div>
+<div id="commanderDisplay" *ngIf="partner">
+     and {{partner.name}}
 </div>
