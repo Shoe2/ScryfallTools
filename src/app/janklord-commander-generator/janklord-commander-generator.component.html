@@ -8,7 +8,10 @@
 <div id="commanderDisplay" *ngIf="selectedCommander">
     {{selectedCommander?.name || ''}} 
 </div>
-<img *ngIf="selectedCommander && selectedCommander.image_uris" [src]="selectedCommander.image_uris.normal">
+<div *ngIf="selectedCommander && selectedCommander.image_uris">
+<img [src]="selectedCommander.image_uris.normal">
+
+</div>
 <!-- <div id="commanderDisplay" *ngIf="partner">
      and {{partner.name}}
 </div> -->
