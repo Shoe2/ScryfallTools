@@ -21,13 +21,13 @@ export class JanklordCommanderGeneratorComponent implements OnInit {
     this.$http.get( url ).subscribe( ( response: ScryfallCard ) => {
       this.selectedCommander = response;
 
-      if ( this.selectedCommander.keywords && this.selectedCommander.keywords.length && this.selectedCommander.keywords.includes( 'Partner' ) ) {
-        const url = 'https://api.scryfall.com/cards/random?q=%20is%3Acommander+usd%3C%3D0.79+format%3Acommander+keyword%3Apartner+-o%3A"partner+with"';
-        this.$http.get( url ).subscribe( ( response: ScryfallCard ) => {
-          this.partner = response;
+      // if ( this.selectedCommander.keywords && this.selectedCommander.keywords.length && this.selectedCommander.keywords.includes( 'Partner' ) ) {
+      //   const url = 'https://api.scryfall.com/cards/random?q=%20is%3Acommander+usd%3C%3D0.79+format%3Acommander+keyword%3Apartner+-o%3A"partner+with"';
+      //   this.$http.get( url ).subscribe( ( response: ScryfallCard ) => {
+      //     this.partner = response;
 
-        } );
-      }
+      //   } );
+      // }
 
       // if ( this.selectedCommander.keywords.includes( 'Friends Forever' ) ) {
       //   const url = 'https://api.scryfall.com/cards/random?q=%20is%3Acommander+usd%3C%3D0.79+format%3Acommander+keyword%3A';
