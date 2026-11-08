@@ -12,6 +12,7 @@ import { DeckMuseComponent } from './deck-muse/deck-muse.component';
 import { JanklordCommanderGeneratorComponent } from './janklord-commander-generator/janklord-commander-generator.component';
 import { ArchidektDeckStatsComponent } from './archidekt-deck-stats/archidekt-deck-stats.component';
 import { RandomGeneratorsComponent } from './random-generators/random-generators.component';
+import { TheWheelOfChaosComponent } from './the-wheel-of-chaos/the-wheel-of-chaos.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -21,7 +22,8 @@ import { RandomGeneratorsComponent } from './random-generators/random-generators
         DeckMuseComponent,
         RandomGeneratorsComponent,
         JanklordCommanderGeneratorComponent,
-        ArchidektDeckStatsComponent
+        ArchidektDeckStatsComponent,
+        TheWheelOfChaosComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule], providers: [DatePipe, provideHttpClient(withInterceptorsFromDi())] })

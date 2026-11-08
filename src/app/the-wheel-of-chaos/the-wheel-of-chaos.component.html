@@ -1,0 +1,15 @@
+  <div class="container">
+    <div class="header-container">
+    <div class="wheel-title">The Wheel of Chaos</div>
+  </div>
+  <div class="output-readout-banner" #outputReadout>Awaiting Chaos...</div>
+  <div class="spinner-viewscreen">
+    <div class="viewscreen-selector-bracket"></div>
+    <div class="spinner-tape-track" #tapeTrack></div>
+  </div>
+
+  <button class="spin-trigger-btn" [disabled]="spinBtnDisabled" (click)="spin()">SPIN</button>
+
+
+  <div class="output-readout-banner" *ngIf="isLoading">Loading...</div>
+</div>

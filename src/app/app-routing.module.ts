@@ -7,6 +7,7 @@ import { TokenComponent } from './token/token.component';
 import { TribalComponent } from './tribal/tribal.component';
 import { ArchidektDeckStatsComponent } from './archidekt-deck-stats/archidekt-deck-stats.component';
 import { RandomGeneratorsComponent } from './random-generators/random-generators.component';
+import { TheWheelOfChaosComponent } from './the-wheel-of-chaos/the-wheel-of-chaos.component';
 
 const routes: Routes = [
   { path: 'token', component: TokenComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'janklord', component: JanklordCommanderGeneratorComponent },
   { path: 'deckstats', component: ArchidektDeckStatsComponent },
   { path: 'randomGenerators', component: RandomGeneratorsComponent },
+  { path: 'wheel', component: TheWheelOfChaosComponent },
   { path: '**', component: HomeComponent },
 ];
 
