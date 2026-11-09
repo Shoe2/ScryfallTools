@@ -62,28 +62,37 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
             }
           }
           if (index === csvToRowArray.length - 2) {
-             this.preloadPackImages(this.boosterPackData)
-      .then(() => {
-        this.isLoading = false;
-        this.imagesLoaded = true;
-        this.spinBtnDisabled = false; 
-        this.outputReadout.nativeElement.innerText = 'Ready to Spin!';
-                    this.initTrackLayout();
-
-      })
-      .catch((err) => {
-        console.error('Failed to cache booster pack arts:', err);
-        this.outputReadout.nativeElement.innerText = 'Error Loading Assets';
-      });
+            this.preloadPackImages(this.boosterPackData)
+              .then(() => {
+                this.isLoading = false;
+                this.imagesLoaded = true;
+                this.spinBtnDisabled = false;
+                this.outputReadout.nativeElement.innerText = 'Ready to Spin!';
+                this.shufflePacks();
+                this.initTrackLayout();
+              })
+              .catch((err) => {
+                console.error('Failed to cache booster pack arts:', err);
+                this.outputReadout.nativeElement.innerText =
+                  'Error Loading Assets';
+              });
           }
         }
       });
   }
 
+  shufflePacks() {
+    const copy = [...this.boosterPackData];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    this.boosterPackData = copy;
+  }
+
   preloadPackImages(packs: any[]): Promise<void[]> {
     const loadPromises = packs.map((pack) => {
       return new Promise<void>((resolve) => {
-
         if (!pack.imageUrl) {
           resolve();
           return;
@@ -91,11 +100,11 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
 
         const img = new Image();
         img.src = pack.imageUrl;
-        
+
         img.onload = () => resolve();
         img.onerror = () => {
           console.warn(`Failed to preload image: ${pack.imageUrl}`);
-          resolve(); 
+          resolve();
         };
       });
     });
@@ -128,7 +137,6 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
           artFrame.innerHTML = '<span class="pack-art-placeholder">🎴</span>';
         }
 
-        
         card.appendChild(artFrame);
         this.tapeTrack.nativeElement.appendChild(card);
       });
@@ -139,52 +147,57 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
     this.isLoading = false;
   }
 
-spin() {
-  if (this.isSpinning || !this.imagesLoaded || this.boosterPackData.length === 0) return;
-  this.isSpinning = true;
-  this.spinBtnDisabled = true;
-  this.outputReadout.nativeElement.classList.remove('reveal');
-  this.outputReadout.nativeElement.innerText = 'Spinning...';
+  spin() {
+    if (
+      this.isSpinning ||
+      !this.imagesLoaded ||
+      this.boosterPackData.length === 0
+    )
+      return;
+    this.isSpinning = true;
+    this.spinBtnDisabled = true;
+    this.outputReadout.nativeElement.classList.remove('reveal');
+    this.outputReadout.nativeElement.innerText = 'Spinning...';
 
-  const selectedIndex = Math.floor(Math.random() * this.boosterPackData.length);
-  const chosenPack = this.boosterPackData[selectedIndex];
-
-  // Force it to spin past exactly 3 or 4 full sets of cards
-  const executionLoopOffset = Math.floor(3 + Math.random() * 2); 
-  
-  // This calculates exactly which card in the long chain to stop on
-  const pixelTargetIndex = (executionLoopOffset * this.boosterPackData.length) + selectedIndex;
-
-  const viewCenterOffset = 380;
-  const cardCenterAdjust = this.cardWidth / 2;
-  const targetPixelPosition = -(
-    pixelTargetIndex * this.cardWidth -
-    viewCenterOffset +
-    cardCenterAdjust
-  );
-
-  // Smooth blur spin effect
-  this.tapeTrack.nativeElement.style.transition = 'transform 7s cubic-bezier(0.1, 0.85, 0.15, 1)';
-  this.tapeTrack.nativeElement.style.transform = `translateX(${targetPixelPosition}px)`;
-
-  setTimeout(() => {
-    this.isSpinning = false;
-    this.spinBtnDisabled = false;
-    this.outputReadout.nativeElement.innerText = chosenPack.name;
-    this.outputReadout.nativeElement.classList.add('reveal');
-
-    // Instantly snap back to the first set (Loop 0) seamlessly
-    this.tapeTrack.nativeElement.style.transition = 'none';
-    
-    const normalizationIndex = selectedIndex;
-    const normalizedPos = -(
-      normalizationIndex * this.cardWidth -
-      viewCenterOffset +
-      cardCenterAdjust
+    const selectedIndex = Math.floor(
+      Math.random() * this.boosterPackData.length,
     );
-    this.trackPosition = normalizedPos;
-    this.tapeTrack.nativeElement.style.transform = `translateX(${this.trackPosition}px)`;
-  }, 7000);
-}
+    const chosenPack = this.boosterPackData[selectedIndex];
 
+    const singleLoopWidth = this.boosterPackData.length * this.cardWidth;
+
+    // 🎯 ADJUSTED BASELINE: Changed from 305 to 315 to swallow the 10px layout discrepancy
+    const baselineOffset = 295;
+
+    // Calculate position inside Loop 2 for the spin animation
+    const targetX =
+      baselineOffset - (singleLoopWidth + selectedIndex * this.cardWidth);
+
+    // Reset class state to allow re-triggering animations
+    this.tapeTrack.nativeElement.classList.remove('spinning');
+    void this.tapeTrack.nativeElement.offsetWidth; // Force reflow
+
+    // Inject the target position into CSS variable
+    this.tapeTrack.nativeElement.style.setProperty(
+      '--target-x',
+      `${targetX}px`,
+    );
+    this.tapeTrack.nativeElement.classList.add('spinning');
+
+    // Wait for the 6-second CSS animation to complete perfectly
+    setTimeout(() => {
+      this.isSpinning = false;
+      this.spinBtnDisabled = false;
+      this.outputReadout.nativeElement.innerText = chosenPack.name;
+      this.outputReadout.nativeElement.classList.add('reveal');
+
+      // Clean up animation class and variable
+      this.tapeTrack.nativeElement.classList.remove('spinning');
+      this.tapeTrack.nativeElement.style.removeProperty('--target-x');
+
+      // Apply the exact same offset to snap cleanly back to Loop 1
+      this.trackPosition = baselineOffset - selectedIndex * this.cardWidth;
+      this.tapeTrack.nativeElement.style.transform = `translate3d(${this.trackPosition}px, 0, 0)`;
+    }, 6000);
+  }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="isLoading">LOADING....</div>
+<div class="yellow-glow-text" *ngIf="isLoading">LOADING....</div>
 <div *ngIf="orphanedCards.length">Orphaned Token Generators: </div>
 <span *ngFor="let card of orphanedCards">
   <span scope="col">{{card.name}},</span>

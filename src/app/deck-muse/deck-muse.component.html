@@ -1,11 +1,16 @@
-Random Deck Theme Generator
-<button (click)="generateDeckIdea()">Generate</button>
-
-
-<div *ngIf="ideas.length > 0">
-<h4>Deck Idea:</h4>
-<div>make a {{ideas[0]}} and {{ideas[1]}} deck</div>
-<div> that is</div>
-<div *ngFor="let color of colorsForIdea">{{color}}</div>
+<div class="column-container">
+  <h4 class="white-cursive-extra">Random Deck Theme Generator</h4>
+  <button class="spin-trigger-btn" (click)="generateDeckIdea()">
+    Muse
+  </button>
+  <div *ngIf="ideas.length > 0">
+    <div class="yellow-glow-text">
+      Deck Idea: Make a {{ ideas[0] }} and {{ ideas[1] }} deck
+    </div>
+    <div class="yellow-glow-text">that is</div>
+    <span *ngFor="let color of colorsForIdea" class="symbol color-{{ color }}">
+      {{ color }}
+    </span>
+  </div>
 
 </div>

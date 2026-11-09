@@ -4,17 +4,8 @@
   padding: 0;
 }
 
-.container {
-  padding:  24px  0 24px 50px;
-  display: flex;
-  flex-direction: column;
-  flex-flow: column;
-  width: 100vw;
-  align-items: center;
-}
-
 .pack-art-placeholder {
-  background-color:#a30036;
+  background-color: #a30036;
 }
 
 body {
@@ -40,18 +31,6 @@ body {
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
 }
-.wheel-title {
-  font-family: "Lucida Handwriting";
-
-  font-size: 100px;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: #ffffff;
-  letter-spacing: 2px;
-  text-shadow:
-    0 0 20px rgba(0, 110, 255, 0.6),
-    3px 3px 0px #0055ff;
-}
 
 /* Horizontal Spinner Core Display Stage */
 .spinner-viewscreen {
@@ -68,7 +47,6 @@ body {
   display: flex;
   align-items: center;
 }
-
 
 .viewscreen-selector-bracket {
   position: absolute;
@@ -92,61 +70,35 @@ body {
   align-items: center;
   position: absolute;
   left: 0;
-  white-space: nowrap;
-  will-change: transform;
   flex-direction: row;
-  flex-wrap: nowrap; /* Prevents items from dropping to the next line */
+  flex-wrap: nowrap;
   height: 100%;
+  width: max-content;
 
-  transform: translateZ(0); /* Forces GPU layer creation */
-  backface-visibility: hidden; /* Prevents visual flicker/blank states */
-  perspective: 1000px; /* Stabilizes 3D rendering matrix */
-}
-
-
-
-/* Control & Results Framework UI */
-.spin-trigger-btn {
-  width: 200px;
-  height: 200px;
-  margin-top: 30px;
-  padding: 14px 50px;
-  font-family: "Impact", sans-serif;
-  font-size: 1.8rem;
-  color: #ffffff;
-  background: linear-gradient(180deg, #ff0055 0%, #a30036 100%);
-  border: none;
-  border-radius: 500px;
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgba(255, 0, 85, 0.4);
-  letter-spacing: 2px;
-  transition:
-    transform 0.1s,
-    filter 0.2s;
-}
-.spin-trigger-btn:hover:not(:disabled) {
-  filter: brightness(1.1);
-}
-.spin-trigger-btn:active:not(:disabled) {
-  transform: scale(0.96);
-}
-.spin-trigger-btn:disabled {
-  background: #2b3240;
-  color: #616b80;
-  box-shadow: none;
-  cursor: not-allowed;
+  /* GPU Protection Layers */
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
-.output-readout-banner {
-  font-size: 50px;
-  font-weight: 600;
-  color: yellow;
-  text-shadow: 0 0 10px #000000;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  min-height: 40px;
+/* ⚡ The Core Spin Animation ⚡ */
+.spinner-tape-track.spinning {
+  /* Animate from 0 to the calculated target position using a custom cubic bezier */
+  animation: chaosSpin 6s cubic-bezier(0.15, 0.85, 0.35, 1) forwards;
 }
-.output-readout-banner.reveal {
+
+@keyframes chaosSpin {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    /* Driven dynamically by your TypeScript calculation */
+    transform: translate3d(var(--target-x, -3000px), 0, 0);
+  }
+}
+
+
+.yellow-glow-text.reveal {
   animation: winner-glow 0.8s ease-in-out infinite alternate;
 }
 @keyframes winner-glow {
@@ -162,10 +114,9 @@ body {
   }
 }
 
-
 .pack-art-frame {
   flex-shrink: 0;
-  width: 150px; 
+  width: 150px;
   height: 100%;
   display: flex;
   align-items: center;
