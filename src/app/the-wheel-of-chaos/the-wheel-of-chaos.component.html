@@ -1,48 +1,48 @@
-  <div class="column-container">
-    <div class="header-container">
+<div class="column-container">
+  <div class="header-container">
     <div class="white-cursive-extra">The Wheel of Chaos</div>
   </div>
   <div class="yellow-glow-text" #outputReadout>Awaiting Chaos...</div>
   <div class="spinner-viewscreen">
     <div class="viewscreen-selector-bracket"></div>
-<div class="spinner-viewscreen">
-  <div class="viewscreen-selector-bracket"></div>
-  <!-- We remove the heavy inline style bindings from here -->
-  <div class="spinner-tape-track" #tapeTrack>
-    @if (imagesLoaded) {
-      <!-- Loop 1: The original track -->
-      @for (pack of boosterPackData; track $index) {
-        <div class="pack-card">
-          <div class="pack-art-frame">
-            @if (pack.imageUrl) {
-              <img [src]="pack.imageUrl" [alt]="pack.name" />
-            } @else {
-              <div class="pack-art-placeholder">❓</div>
-            }
-          </div>
-          <div class="pack-title">{{ pack.name }}</div>
-        </div>
-      }
-      <!-- Loop 2: The exact duplicate set right behind it for infinite seamless tiling -->
-      @for (pack of boosterPackData; track 'dup-' + $index) {
-        <div class="pack-card">
-          <div class="pack-art-frame">
-            @if (pack.imageUrl) {
-              <img [src]="pack.imageUrl" [alt]="pack.name" />
-            } @else {
-              <div class="pack-art-placeholder">❓</div>
-            }
-          </div>
-          <div class="pack-title">{{ pack.name }}</div>
-        </div>
-      }
-    }
+    <div class="spinner-viewscreen">
+      <div class="viewscreen-selector-bracket"></div>
+      <div class="spinner-tape-track" #tapeTrack>
+        @if (imagesLoaded) {
+          @for (pack of boosterPackData; track $index) {
+            <div class="pack-card">
+              <div class="pack-art-frame">
+                @if (pack.imageUrl) {
+                  <img [src]="pack.imageUrl" [alt]="pack.name" />
+                } @else {
+                  <div class="pack-art-placeholder">❓</div>
+                }
+              </div>
+              <div class="pack-title">{{ pack.name }}</div>
+            </div>
+          }
+          @for (pack of boosterPackData; track "dup-" + $index) {
+            <div class="pack-card">
+              <div class="pack-art-frame">
+                @if (pack.imageUrl) {
+                  <img [src]="pack.imageUrl" [alt]="pack.name" />
+                } @else {
+                  <div class="pack-art-placeholder">❓</div>
+                }
+              </div>
+              <div class="pack-title">{{ pack.name }}</div>
+            </div>
+          }
+        }
+      </div>
+    </div>
   </div>
-</div>
-  </div>
-
-  <button class="spin-trigger-btn" [disabled]="spinBtnDisabled" (click)="spin()">SPIN</button>
-
-
+  <button
+    class="spin-trigger-btn"
+    [disabled]="spinBtnDisabled"
+    (click)="spin()"
+  >
+    SPIN
+  </button>
   <div class="yellow-glow-text" *ngIf="isLoading">Loading...</div>
 </div>
