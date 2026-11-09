@@ -50,6 +50,9 @@ background-repeat: repeat;
       padding: 8px;
       text-align: center;
       transition: border-color 0.3s;
+      flex-shrink: 0;
+      transform: translateZ(0); 
+  backface-visibility: hidden;
     }
     
     .pack-art-frame {
@@ -64,6 +67,7 @@ background-repeat: repeat;
       position: relative;
       height: 240px;
       min-height:240px;
+      max-width:140px;
     
     }
     .pack-art-frame img {

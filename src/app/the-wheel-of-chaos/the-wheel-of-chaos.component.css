@@ -97,6 +97,10 @@ body {
   flex-direction: row;
   flex-wrap: nowrap; /* Prevents items from dropping to the next line */
   height: 100%;
+
+  transform: translateZ(0); /* Forces GPU layer creation */
+  backface-visibility: hidden; /* Prevents visual flicker/blank states */
+  perspective: 1000px; /* Stabilizes 3D rendering matrix */
 }
 
 

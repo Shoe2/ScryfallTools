@@ -26,6 +26,7 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
   cardWidth = 150;
   isSpinning = false;
   trackPosition = 0;
+  imagesLoaded = false;
 
   constructor(private readonly $http: HttpClient) {}
 
@@ -61,10 +62,45 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
             }
           }
           if (index === csvToRowArray.length - 2) {
-            this.initTrackLayout();
+             this.preloadPackImages(this.boosterPackData)
+      .then(() => {
+        this.isLoading = false;
+        this.imagesLoaded = true;
+        this.spinBtnDisabled = false; 
+        this.outputReadout.nativeElement.innerText = 'Ready to Spin!';
+                    this.initTrackLayout();
+
+      })
+      .catch((err) => {
+        console.error('Failed to cache booster pack arts:', err);
+        this.outputReadout.nativeElement.innerText = 'Error Loading Assets';
+      });
           }
         }
       });
+  }
+
+  preloadPackImages(packs: any[]): Promise<void[]> {
+    const loadPromises = packs.map((pack) => {
+      return new Promise<void>((resolve) => {
+
+        if (!pack.imageUrl) {
+          resolve();
+          return;
+        }
+
+        const img = new Image();
+        img.src = pack.imageUrl;
+        
+        img.onload = () => resolve();
+        img.onerror = () => {
+          console.warn(`Failed to preload image: ${pack.imageUrl}`);
+          resolve(); 
+        };
+      });
+    });
+
+    return Promise.all(loadPromises);
   }
 
   initTrackLayout() {
@@ -87,11 +123,12 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
 
         if (pack.imageUrl) {
           img.src = pack.imageUrl;
+          artFrame.appendChild(img);
         } else {
           artFrame.innerHTML = '<span class="pack-art-placeholder">🎴</span>';
         }
 
-        artFrame.appendChild(img);
+        
         card.appendChild(artFrame);
         this.tapeTrack.nativeElement.appendChild(card);
       });
@@ -102,49 +139,52 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
     this.isLoading = false;
   }
 
-  spin() {
-    if (this.isSpinning || this.boosterPackData.length === 0) return;
-    this.isSpinning = true;
-    this.spinBtnDisabled = true;
-    this.outputReadout.nativeElement.classList.remove('reveal');
-    this.outputReadout.nativeElement.innerText = 'Spinning...';
+spin() {
+  if (this.isSpinning || !this.imagesLoaded || this.boosterPackData.length === 0) return;
+  this.isSpinning = true;
+  this.spinBtnDisabled = true;
+  this.outputReadout.nativeElement.classList.remove('reveal');
+  this.outputReadout.nativeElement.innerText = 'Spinning...';
 
-    const selectedIndex = Math.floor(
-      Math.random() * this.boosterPackData.length,
-    );
-    const chosenPack = this.boosterPackData[selectedIndex];
+  const selectedIndex = Math.floor(Math.random() * this.boosterPackData.length);
+  const chosenPack = this.boosterPackData[selectedIndex];
 
-    const executionLoopOffset = Math.floor(3 + Math.random() * 2);
-    const pixelTargetIndex =
-      executionLoopOffset * this.boosterPackData.length + selectedIndex;
+  // Force it to spin past exactly 3 or 4 full sets of cards
+  const executionLoopOffset = Math.floor(3 + Math.random() * 2); 
+  
+  // This calculates exactly which card in the long chain to stop on
+  const pixelTargetIndex = (executionLoopOffset * this.boosterPackData.length) + selectedIndex;
 
-    const viewCenterOffset = 380;
-    const cardCenterAdjust = this.cardWidth / 2;
-    const targetPixelPosition = -(
-      pixelTargetIndex * this.cardWidth -
+  const viewCenterOffset = 380;
+  const cardCenterAdjust = this.cardWidth / 2;
+  const targetPixelPosition = -(
+    pixelTargetIndex * this.cardWidth -
+    viewCenterOffset +
+    cardCenterAdjust
+  );
+
+  // Smooth blur spin effect
+  this.tapeTrack.nativeElement.style.transition = 'transform 7s cubic-bezier(0.1, 0.85, 0.15, 1)';
+  this.tapeTrack.nativeElement.style.transform = `translateX(${targetPixelPosition}px)`;
+
+  setTimeout(() => {
+    this.isSpinning = false;
+    this.spinBtnDisabled = false;
+    this.outputReadout.nativeElement.innerText = chosenPack.name;
+    this.outputReadout.nativeElement.classList.add('reveal');
+
+    // Instantly snap back to the first set (Loop 0) seamlessly
+    this.tapeTrack.nativeElement.style.transition = 'none';
+    
+    const normalizationIndex = selectedIndex;
+    const normalizedPos = -(
+      normalizationIndex * this.cardWidth -
       viewCenterOffset +
       cardCenterAdjust
     );
+    this.trackPosition = normalizedPos;
+    this.tapeTrack.nativeElement.style.transform = `translateX(${this.trackPosition}px)`;
+  }, 7000);
+}
 
-    this.tapeTrack.nativeElement.style.transition =
-      'transform 7s cubic-bezier(0.1, 0.85, 0.15, 1)';
-    this.tapeTrack.nativeElement.style.transform = `translateX(${targetPixelPosition}px)`;
-
-    setTimeout(() => {
-      this.isSpinning = false;
-      this.spinBtnDisabled = false;
-      this.outputReadout.nativeElement.innerText = chosenPack.name;
-      this.outputReadout.nativeElement.classList.add('reveal');
-
-      this.tapeTrack.nativeElement.style.transition = 'none';
-      const normalizationIndex = selectedIndex;
-      const normalizedPos = -(
-        normalizationIndex * this.cardWidth -
-        viewCenterOffset +
-        cardCenterAdjust
-      );
-      this.trackPosition = normalizedPos;
-      this.tapeTrack.nativeElement.style.transform = `translateX(${this.trackPosition}px)`;
-    }, 7000);
-  }
 }
