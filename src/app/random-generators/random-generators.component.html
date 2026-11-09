@@ -1,12 +1,37 @@
-<h5>Random Creature Type</h5>
-<button (click)="randomCreatureType()">Generate Creature Type</button>
-<div>{{selectedCreatureType}}</div>
-<hr/>
-<h5>Random Keyword</h5>
-<button (click)="randomKeyword()">Generate Random Keyword</button>
-<div>{{selectedKeyword}}</div>
-<hr/>
+<h5 class="white-cursive-extra">Random Generators</h5>
+<div class="row">
+  <div class="col">
+    <button (click)="randomCreatureType()" class="spin-trigger-btn">
+      Creature Type
+    </button>
+  </div>
+  <div class="col align-self-center">
+    <span class="yellow-glow-text">{{ selectedCreatureType }}</span>
+  </div>
+</div>
 
-<h5>Random Color Identity</h5>
-<button (click)="generateRandomColorIdentity()">Generate Color Idenitiy</button>
-<span *ngFor="let color of colorsForIdea" class="symbol color-{{color}}">{{color}}</span>
+<hr />
+<div class="row">
+  <div class="col">
+    <button (click)="randomKeyword()" class="spin-trigger-btn">Keyword</button>
+  </div>
+  <div class="col align-self-center">
+    <span class="yellow-glow-text">{{ selectedKeyword }}</span>
+  </div>
+</div>
+<hr />
+
+<div class="row">
+  <div class="col">
+    <button (click)="generateRandomColorIdentity()" class="spin-trigger-btn">
+      Color Identity
+    </button>
+  </div>
+  <div class="col align-self-center">
+    <span
+      *ngFor="let color of colorsForIdea"
+      class="symbol color-{{ color }}"
+      >{{ color }}</span
+    >
+  </div>
+</div>

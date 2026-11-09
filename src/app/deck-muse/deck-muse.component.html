@@ -5,7 +5,7 @@
   </button>
   <div *ngIf="ideas.length > 0">
     <div class="yellow-glow-text">
-      Deck Idea: Make a {{ ideas[0] }} and {{ ideas[1] }} deck
+      Deck Idea: Make a <u>{{ ideas[0] }}</u> and <u>{{ ideas[1] }}</u> deck
     </div>
     <div class="yellow-glow-text">that is</div>
     <span *ngFor="let color of colorsForIdea" class="symbol color-{{ color }}">

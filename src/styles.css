@@ -150,3 +150,14 @@ body {
   width: 100vw;
   align-items: center;
 }
+
+.error-box{
+  border: 1px solid red;
+   border-radius: 8px;
+   background-color: pink;
+   color: red;
+   font-weight: bold;
+   margin-top: 6px;
+   margin-bottom: 6px;
+   padding: 6px;
+}

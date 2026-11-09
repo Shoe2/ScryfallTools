@@ -1,8 +1,10 @@
 <div class="yellow-glow-text" *ngIf="isLoading">LOADING....</div>
-<div *ngIf="orphanedCards.length">Orphaned Token Generators: </div>
+<div class="error-box">
+  <div *ngIf="orphanedCards.length"><u>Orphaned Token Generators (These cards contain the word "Create" in their text box but do not follow WOTC's standard wordings for token creation): </u></div>
 <span *ngFor="let card of orphanedCards">
   <span scope="col">{{card.name}},</span>
 </span>
+</div>
 <table class="table">
     <thead class="thead-dark">
       <tr>
