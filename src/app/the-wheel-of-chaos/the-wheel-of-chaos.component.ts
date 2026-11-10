@@ -56,7 +56,11 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                 !part.includes('Italian') &&
                 !part.includes('Foreign')
               ) {
-                name = part;
+                if (part.includes('"')) {
+                  name=part.split('"')[6];
+                } else {
+                  name = part;
+                }
               }
             }
             if (name) {
