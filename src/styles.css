@@ -149,6 +149,7 @@ body {
   flex-flow: column;
   width: 100vw;
   align-items: center;
+  gap: 6px;
 }
 
 .error-box{
