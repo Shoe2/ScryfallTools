@@ -27,7 +27,7 @@
                 @if (pack.imageUrl) {
                   <img [src]="pack.imageUrl" [alt]="pack.name" />
                 } @else {
-                  <div class="pack-art-placeholder">❓</div>
+                  <div class="pack-art-placeholder">{{pack.name}}</div>
                 }
               </div>
               <div class="pack-title">{{ pack.name }}</div>

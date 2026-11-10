@@ -143,7 +143,7 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
           img.src = pack.imageUrl;
           artFrame.appendChild(img);
         } else {
-          artFrame.innerHTML = '<span class="pack-art-placeholder">🎴</span>';
+          artFrame.innerHTML = `<span class="pack-art-placeholder">🎴 ${pack.name}</span>`;
         }
 
         card.appendChild(artFrame);
