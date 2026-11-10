@@ -60,12 +60,17 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                 !part.includes('White Border')
               ) {
                 if (part.includes('"')) {
-                  name=part.split('"')[6];
+                  name = part.split('"')[6];
                 } else {
                   name = part;
                 }
               }
             }
+
+            if (name && !imageUrl) {
+              console.log(name);
+            }
+
             if (name) {
               this.boosterPackData.push({
                 name,
@@ -115,7 +120,8 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
 
         img.onload = () => resolve();
         img.onerror = () => {
-          console.warn(`Failed to preload image: ${pack.imageUrl}`);
+          delete(pack.imageUrl)
+          console.warn(`Failed to preload image: ${pack.name}`);
           resolve();
         };
       });
