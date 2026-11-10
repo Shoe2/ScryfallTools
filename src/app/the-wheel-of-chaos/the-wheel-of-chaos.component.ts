@@ -54,7 +54,7 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                 part.includes(' Booster Pack') &&
                 !part.includes('Six Card') &&
                 !part.includes('Italian') &&
-                !part.includes('Foreign')
+                !part.includes('Black Border')
               ) {
                 if (part.includes('"')) {
                   name=part.split('"')[6];
