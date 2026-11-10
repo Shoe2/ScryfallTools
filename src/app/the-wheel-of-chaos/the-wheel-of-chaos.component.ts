@@ -50,7 +50,12 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                 imageUrl = `https://tcgplayer-cdn.tcgplayer.com/product/${tcgPlayerProductId}_in_200x200.jpg`;
               }
 
-              if (part.includes(' Booster Pack')) {
+              if (
+                part.includes(' Booster Pack') &&
+                !part.includes('Six Card') &&
+                !part.includes('Italian') &&
+                !part.includes('Foreign')
+              ) {
                 name = part;
               }
             }
