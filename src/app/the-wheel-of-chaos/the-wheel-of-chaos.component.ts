@@ -71,6 +71,12 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                   if (part === 'Phyrexia: All Will Be One Compleat Edition Booster Pack') {
                     imageUrl = '/assets/compleat.jpeg';
                   }
+                  if(part==="Portal Demo Game Booster Pack"){
+                    imageUrl='/assets/portalDemoGame.jpg'
+                  }
+                  if(part==="Starter 2000 Advanced Booster Pack"){
+                    imageUrl = '/assets/starterSampler.jpg'
+                  }
                 }
               }
             }
