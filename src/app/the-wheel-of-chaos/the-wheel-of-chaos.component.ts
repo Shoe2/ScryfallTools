@@ -57,6 +57,7 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                 !part.includes('Japanese') &&
                 !part.includes('Minimal') &&
                 !part.includes('Black Border') &&
+                !part.includes('Summer Magic') &&
                 !part.includes('White Border')
               ) {
                 if (part.includes('"')) {
