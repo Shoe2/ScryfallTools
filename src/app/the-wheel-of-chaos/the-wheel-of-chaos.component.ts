@@ -63,6 +63,13 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                   name = part.split('"')[6];
                 } else {
                   name = part;
+                  if (part === 'Visions Preview Printing Booster Pack') {
+                    imageUrl = '/assets/visions-preview.jpg';
+                  }
+
+                  if (part === 'Phyrexia: All Will Be One Compleat Edition Booster Pack') {
+                    imageUrl = '/assets/compleat.jpeg';
+                  }
                 }
               }
             }
@@ -120,7 +127,7 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
 
         img.onload = () => resolve();
         img.onerror = () => {
-          delete(pack.imageUrl)
+          delete pack.imageUrl;
           console.warn(`Failed to preload image: ${pack.name}`);
           resolve();
         };
