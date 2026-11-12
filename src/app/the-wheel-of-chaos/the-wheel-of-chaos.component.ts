@@ -77,6 +77,9 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                   if(part==="Starter 2000 Advanced Booster Pack"){
                     imageUrl = '/assets/starterSampler.jpg'
                   }
+                  if(part==="Eighth Edition Demo Game Booster Pack"){
+                    imageUrl = '/assets/8thEditionDemoGame.webp'
+                  }
                 }
               }
             }
