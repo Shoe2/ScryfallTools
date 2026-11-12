@@ -78,7 +78,10 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                     imageUrl = '/assets/starterSampler.jpg'
                   }
                   if(part==="Eighth Edition Demo Game Booster Pack"){
-                    imageUrl = '/assets/8thEditionDemoGame.webp'
+                    imageUrl = '/assets/8thEditionDemoGame.jpg'
+                  }
+                  if(part==="Eighth Edition Advanced Booster Pack"){
+                    imageUrl = '/assets/8thEditionAdvanced.jpg'
                   }
                    if(part==="Worldwake Booster Pack"){
                     imageUrl = '/assets/worldwake.jpg'
