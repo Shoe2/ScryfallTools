@@ -80,6 +80,12 @@ export class TheWheelOfChaosComponent implements AfterViewInit {
                   if(part==="Eighth Edition Demo Game Booster Pack"){
                     imageUrl = '/assets/8thEditionDemoGame.webp'
                   }
+                   if(part==="Worldwake Booster Pack"){
+                    imageUrl = '/assets/worldwake.jpg'
+                  }
+                   if(part==="Alara Reborn Booster Pack"){
+                    imageUrl = '/assets/alarareborn.jpg'
+                  }
                 }
               }
             }
